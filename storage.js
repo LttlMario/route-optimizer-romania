@@ -1,0 +1,6 @@
+const DB_NAME = 'route-optimizer-local-db';
+const STORE_NAME = 'route-snapshots';
+function openDatabase() { return new Promise((resolve, reject) => { const request = indexedDB.open(DB_NAME, 1); request.onupgradeneeded = () => request.result.createObjectStore(STORE_NAME, { keyPath: 'id' }); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); }); }
+export async function saveSnapshot(data) { try { const db = await openDatabase(); const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).put({ id: 'active-route', savedAt: new Date().toISOString(), data }); } catch { /* localStorage rămâne fallback */ } }
+export async function saveNamedRoute(name, data) { try { const db = await openDatabase(); const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).put({ id: `route-${Date.now()}`, name, savedAt: new Date().toISOString(), data }); } catch {} }
+export async function listSavedRoutes() { try { const db = await openDatabase(); return await new Promise((resolve, reject) => { const request = db.transaction(STORE_NAME).objectStore(STORE_NAME).getAll(); request.onsuccess = () => resolve(request.result || []); request.onerror = () => reject(request.error); }); } catch { return []; } }

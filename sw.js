@@ -1,8 +1,8 @@
-const CACHE_NAME = 'route-optimizer-pwa-v6';
+const CACHE_NAME = 'route-optimizer-pwa-v8';
 const APP_SHELL = [
   './', './index.html', './routes.html', './completed.html',
   './styles.css', './routes.css', './app.js', './routes.js', './completed.js',
-  './manifest.json', './pwa.js', './icon-192.svg', './icon-512.svg'
+  './manifest.json', './storage.js', './pwa.js', './icon-192.svg', './icon-512.svg'
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
@@ -20,6 +20,8 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
+
 
 
 

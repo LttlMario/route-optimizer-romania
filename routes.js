@@ -1,3 +1,4 @@
+import { saveSnapshot } from './storage.js';
 const STORAGE_KEY = 'route-optimizer-romania-v1';
 const COMPLETED_KEY = 'route-optimizer-completed-v1';
 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -5,7 +6,7 @@ const state = saved || { start: null, end: null, stops: [], returnToStart: false
 const map = L.map('route-map').setView([45.9432, 24.9668], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 const $ = (selector) => document.querySelector(selector);
-function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); saveSnapshot(state); }
 function pinIcon(color, label) { return L.divIcon({ className: 'pin-icon', html: `<svg viewBox="0 0 38 48" aria-hidden="true"><path d="M19 1C9.1 1 1.5 8.4 1.5 17.5 1.5 29.5 19 47 19 47s17.5-17.5 17.5-29.5C36.5 8.4 28.9 1 19 1Z" fill="${color}" stroke="#f3fffb" stroke-width="2"/><circle cx="19" cy="17" r="10" fill="#ffffff33"/><text x="19" y="21" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Arial, sans-serif">${label}</text></svg>`, iconSize: [38, 48], iconAnchor: [19, 47] }); }
 function renderList() { const list = $('#delivery-list'); list.innerHTML = ''; if (state.start) { const start = document.createElement('li'); start.className = 'delivery-item'; start.innerHTML = `<div><strong>Start</strong><span>${state.start.display_name}</span></div>`; list.append(start); } state.stops.filter((stop) => !stop.delivered).forEach((stop, index) => { const item = document.createElement('li'); item.className = `delivery-item${stop.delivered ? ' delivered' : ''}`; item.innerHTML = `<div><strong>Stop ${index + 1}</strong><span>${stop.display_name}${stop.etaLabel ? `<small class="eta-label">Sosire estimată: ${stop.etaLabel}</small>` : ''}${stop.statusLabel ? `<small class="status-badge status-${stop.status}">${stop.statusLabel}</small>` : ''}${stop.note ? `<small>Notiță: ${stop.note}</small>` : ''}</span></div>${stop.delivered ? '<span class="delivered-label">Livrat</span>' : `<button class="deliver-button" data-index="${state.stops.indexOf(stop)}">Actualizează</button>`}`; list.append(item); }); if (state.end || (state.returnToStart && state.start)) { const finish = document.createElement('li'); finish.className = 'delivery-item'; const end = state.end || state.start; finish.innerHTML = `<div><strong>Finish</strong><span>${end.display_name}${end.etaLabel ? `<small class="eta-label">Sosire estimată: ${end.etaLabel}</small>` : ''}</span></div>`; list.append(finish); } const delivered = state.stops.filter((stop) => stop.delivered).length; $('#route-meta').textContent = `${state.stops.length} opriri · ${delivered} livrate`; list.querySelectorAll('.deliver-button').forEach((button) => button.addEventListener('click', () => { openStatusEditor(Number(button.dataset.index)); })); }
 const STATUS_LABELS = { delivered: 'Livrat', absent: 'Client absent', 'wrong-address': 'Adresă greșită', rescheduled: 'Reprogramat', cancelled: 'Anulat' };
@@ -27,6 +28,7 @@ renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize()
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) $('#navigation-options').hidden = true; });
+
 
 
 
