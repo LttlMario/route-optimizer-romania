@@ -116,3 +116,7 @@ button.ghost { background: transparent; color: #9bb2ac; }
   .sidebar-nav { justify-content: center; flex-wrap: wrap; }
   .site-footer { text-align: center; }
 }
+
+.install-app { padding: 9px 12px; border: 1px solid #36b89b; border-radius: 9px; background: #21433c; color: #8ce5d0; font-size: .78rem; font-weight: 800; }
+.install-app:hover { background: #36b89b; color: #09211c; }
+@media (max-width: 800px) { .install-app { margin: 10px auto 0; } }

@@ -7,7 +7,12 @@
     <title>Route Optimizer România</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="styles.css" />
-  </head>
+    <link rel="manifest" href="./manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="./icon-192.svg" />
+</head>
   <body>
     <aside class="site-sidebar"><div class="brand-mark">RO</div><strong class="brand-name">Route Optimizer</strong><nav class="sidebar-nav" aria-label="Navigare principală"><a class="nav-link active" href="index.html">⚙ Optimizare rută</a><a class="nav-link" href="routes.html">✓ Ruta curierului</a><a class="nav-link" href="completed.html">▣ Stopuri finalizate</a></nav><p class="sidebar-note">OpenStreetMap<br />Optimizare locală</p></aside>
     <main class="app-shell">
@@ -87,7 +92,10 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="app.js" type="module"></script>
-  </body>
+    <script src="pwa.js"></script>
+</body>
 </html>
+
+
 
 
