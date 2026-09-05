@@ -53,3 +53,8 @@
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
 .navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
 .navigation-preference select { min-height:38px; }
+html, body { overflow-x: hidden; }
+@media (min-width: 801px) {
+  .route-shell, .history-shell { max-width: calc(100vw - 218px); overflow-x: hidden; }
+  .route-workspace, .route-header, .history-shell .route-header, .history-card { max-width: 100%; }
+}
