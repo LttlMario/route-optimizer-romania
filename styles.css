@@ -138,3 +138,4 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .stop-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .stop-locked { border-left: 3px solid #f0b55e; padding-left: 8px; }
 .lock-stop { padding: 3px 7px; background: transparent; color: #8ce5d0; font-size: .85rem; }
+.priority-input { width: 42px; min-height: 30px; padding: 3px 5px; border: 1px solid #31534d; border-radius: 7px; background: #0e201d; color: #f3fffb; text-align: center; font-weight: 700; }
