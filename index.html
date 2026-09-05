@@ -86,7 +86,7 @@
         </section>
       </section>
     </main>
-    <section id="review-modal" class="review-modal" hidden><div class="review-card"><div class="review-header"><div><p class="eyebrow">PASUL 2</p><h2>Verifică adresele</h2><p>Confirmă că toate opririle sunt prezente înainte de optimizare.</p></div><div class="review-header-actions"><button id="toggle-review-map" class="ghost" type="button">Vezi harta</button><button id="back-to-entry" class="ghost" type="button">← Înapoi</button></div></div><ol id="review-items" class="review-items"></ol><div id="review-map" class="review-map" hidden></div><button id="optimize-from-review" class="primary review-optimize" type="button">Optimizează ruta</button></div></section>
+    <section id="address-results-modal" class="review-modal" hidden><div class="review-card address-results-card"><div class="review-header"><div><p class="eyebrow">CONFIRMARE ADRESĂ</p><h2>Alege rezultatul corect</h2><p>Verifică orașul și strada înainte de adăugare.</p></div><button id="cancel-address-results" class="ghost" type="button">Anulează</button></div><div id="address-results" class="address-results"></div></div></section><section id="review-modal" class="review-modal" hidden><div class="review-card"><div class="review-header"><div><p class="eyebrow">PASUL 2</p><h2>Verifică adresele</h2><p>Confirmă că toate opririle sunt prezente înainte de optimizare.</p></div><div class="review-header-actions"><button id="toggle-review-map" class="ghost" type="button">Vezi harta</button><button id="back-to-entry" class="ghost" type="button">← Înapoi</button></div></div><ol id="review-items" class="review-items"></ol><div id="review-map" class="review-map" hidden></div><button id="optimize-from-review" class="primary review-optimize" type="button">Optimizează ruta</button></div></section>
     <section id="bulk-modal" class="review-modal" hidden><div class="review-card bulk-card"><div class="review-header"><div><p class="eyebrow">ADĂUGARE RAPIDĂ</p><h2>Adresele livrărilor</h2><p>O adresă pe fiecare rând. Poți dicta sau scana o etichetă.</p></div><button id="close-bulk" class="ghost" type="button">← Înapoi</button></div><textarea id="bulk-addresses" rows="8" placeholder="Strada Exemplu 1, București&#10;Strada Exemplu 2, București"></textarea><div class="bulk-actions"><button id="bulk-voice" type="button">🎙 Dictează</button><button id="bulk-camera" type="button">▣ Scanează cu camera</button><input id="bulk-image" type="file" accept="image/*" capture="environment" hidden /></div><section id="scan-result" class="scan-result" hidden><label for="scan-text">Text detectat — verifică înainte de adăugare</label><textarea id="scan-text" rows="4"></textarea><div class="scan-result-actions"><button id="copy-scan-text" type="button">Copiază</button><button id="add-scan-text" type="button">Adaugă în listă</button><button id="clear-scan-text" type="button">Șterge</button></div></section><button id="bulk-done" class="primary review-optimize" type="button">Am terminat</button></div></section>
     <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
 
@@ -95,6 +95,7 @@
     <script src="pwa.js"></script>
 </body>
 </html>
+
 
 
 

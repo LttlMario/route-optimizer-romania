@@ -129,3 +129,8 @@ button.ghost { background: transparent; color: #9bb2ac; }
 @media (max-width: 520px) { .scan-result-actions { grid-template-columns: 1fr; } }
 
 .eta-label { display: block; margin-top: 4px; color: #6ee7c8; font-size: .75rem; font-weight: 700; }
+
+.address-results { display: grid; gap: 8px; margin-top: 18px; }
+.address-result-option { display: grid; gap: 5px; width: 100%; padding: 12px; border: 1px solid #3b514c; border-radius: 9px; background: #101a18; color: #e5f3ef; text-align: left; white-space: normal; }
+.address-result-option:hover { border-color: #36b89b; background: #21433c; }
+.address-result-option small { color: #8aa19b; }

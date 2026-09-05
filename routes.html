@@ -21,19 +21,21 @@
         <div class="panel-actions"><button id="recalculate" class="primary">Recalculează opririle rămase</button><button id="reset-delivered" class="secondary">Resetează livrările</button></div><button id="finish-job" class="finish-job" type="button" hidden>Încheie jobul</button>
         <button id="toggle-route-view-mobile" class="mobile-map-toggle" type="button">Vezi harta</button>
         <div class="progress-card"><div class="progress-top"><strong id="progress-label">0 / 0 livrate</strong><span id="progress-percent">0%</span></div><div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div></div>
-        <div id="next-stop-card" class="next-stop-card" hidden><div><span id="next-label" class="next-label">URMĂTOAREA OPRIRE</span><strong id="next-stop-address">—</strong></div><div class="navigation-actions"><button id="navigate-next" class="navigate-button">Navighează</button><div id="navigation-options" class="navigation-options" hidden><button id="open-google-maps" type="button">Google Maps</button><button id="open-waze" type="button">Waze</button></div></div></div>
+        <div id="next-stop-card" class="next-stop-card" hidden><div><span id="next-label" class="next-label">URMĂTOAREA OPRIRE</span><strong id="next-stop-address">—</strong></div><div class="navigation-actions"><button id="navigate-next" class="navigate-button">Navighează</button><div id="navigation-options" class="navigation-options" hidden><button id="open-google-maps" type="button">Google Maps</button><button id="open-apple-maps" type="button">Apple Maps</button><button id="open-waze" type="button">Waze</button></div></div></div>
         <p class="delivery-hint">Apasă „Livrat” după ce predai coletul. Oprirea se colorează verde și rămâne salvată pe acest dispozitiv.</p>
         <ol id="delivery-list" class="delivery-list"></ol>
       </section>
       <section class="route-map-panel"><button id="map-back-to-list" class="map-back-to-list" type="button">← Înapoi la rută</button><div id="route-map"></div></section>
     </section>
   </main>
-  <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
+<section id="delivery-status-modal" class="review-modal" hidden><div class="review-card status-card"><div class="review-header"><div><p class="eyebrow">ACTUALIZARE OPRIRE</p><h2>Ce s-a întâmplat?</h2><p>Salvează statusul și o notiță pentru acest stop.</p></div><button id="close-status-modal" class="ghost" type="button">Închide</button></div><label for="delivery-status">Status</label><select id="delivery-status"><option value="delivered">Livrat</option><option value="absent">Client absent</option><option value="wrong-address">Adresă greșită</option><option value="rescheduled">Reprogramat</option><option value="cancelled">Anulat</option></select><label for="delivery-note">Notiță</label><textarea id="delivery-note" rows="4" placeholder="Ex: clientul revine la ora 16:00"></textarea><button id="save-delivery-status" class="primary" type="button">Salvează statusul</button></div></section>  <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="routes.js" type="module"></script>
   <script src="pwa.js"></script>
 </body>
 </html>
+
+
 
 
 
