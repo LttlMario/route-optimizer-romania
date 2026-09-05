@@ -76,8 +76,9 @@ function improveOrder(order, matrix, closeLoop, fixedEnd) {
   }
   return order;
 }
+function validateRoute() { if (!state.start) return 'Setează punctul de plecare.'; if (!state.stops.length) return 'Adaugă cel puțin o oprire.'; const seen = new Set([`${Number(state.start.lat).toFixed(5)},${Number(state.start.lon).toFixed(5)}`]); for (const [index, stop] of state.stops.entries()) { const key = `${Number(stop.lat).toFixed(5)},${Number(stop.lon).toFixed(5)}`; if (seen.has(key)) return `Stopul ${index + 1} este duplicat.`; seen.add(key); if (stop.windowStart && stop.windowEnd && stop.windowEnd < stop.windowStart) return `Fereastra orară a stopului ${index + 1} este invalidă.`; } return ''; }
 async function calculateRoute() {
-  if (!state.start || !state.stops.length) return; setStatus('Calculez timpii și optimizez traseul…');
+  const validationError = validateRoute(); if (validationError) { setStatus(validationError, true); return; } setStatus('Calculez timpii și optimizez traseul…');
   const points = [state.start, ...state.stops, ...(state.end ? [state.end] : [])]; const fixedEnd = Boolean(state.end); const closeLoop = !fixedEnd && $('#return-to-start').checked;
   try {
     const coordinates = points.map((point) => `${point.lon},${point.lat}`).join(';'); const tableResponse = await fetch(`https://router.project-osrm.org/table/v1/driving/${coordinates}?annotations=duration`); const table = await tableResponse.json(); if (!table.durations) throw new Error('Nu am putut calcula timpii dintre opriri.');
