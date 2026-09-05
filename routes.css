@@ -51,3 +51,5 @@
 .status-card textarea { resize: vertical; }
 .status-badge { display: inline-block; margin-top: 5px; padding: 4px 7px; border-radius: 6px; color: #09211c !important; font-size: .7rem !important; font-weight: 800; }
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
+.navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
+.navigation-preference select { min-height:38px; }

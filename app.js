@@ -134,3 +134,7 @@ const toggleView = $('#toggle-view'); if (toggleView) toggleView.addEventListene
 
 
 
+
+function normalizeOcrLine(line) { return line.replace(/[|]/g, 'I').replace(/[–—]/g, '-').replace(/\s+/g, ' ').replace(/\b(Bucure[sș]ti|Bucuresti)\b/i, 'București').trim(); }
+function extractPostalCode(line) { const match = line.match(/\b(\d{6})\b/); return match ? match[1] : ''; }
+function cleanOcrLines(rawText) { return rawText.split(/\r?\n|\s*;\s*|\s+\|\s+/).map(normalizeOcrLine).filter((line) => line.length >= 5 && /\d|strada|șoseaua|bulevardul|calea|aleea|nr\.?|bl\.?/i.test(line)).map((line) => { const postalCode = extractPostalCode(line); return postalCode && !/cod poștal/i.test(line) ? `${line} (cod poștal ${postalCode})` : line; }); }
