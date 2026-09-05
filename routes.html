@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruta curierului</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="routes.css" />
+</head>
+<body>
+  <aside class="site-sidebar"><div class="brand-mark">RO</div><strong class="brand-name">Route Optimizer</strong><nav class="sidebar-nav" aria-label="Navigare principală"><a class="nav-link" href="index.html">⚙ Optimizare rută</a><a class="nav-link active" href="routes.html">✓ Ruta curierului</a><a class="nav-link" href="completed.html">▣ Stopuri finalizate</a></nav><p class="sidebar-note">OpenStreetMap<br />Optimizare locală</p></aside>
+  <main class="route-shell">
+    <header class="route-header"><div><p class="eyebrow">RUTĂ PREGĂTITĂ</p><h1>Ruta curierului</h1><p id="route-meta">Încarc opririle…</p></div><a class="back-link" href="index.html">← Înapoi la optimizare</a></header>
+    <section class="route-workspace">
+      <section class="delivery-panel">
+        <div class="panel-actions"><button id="recalculate" class="primary">Recalculează opririle rămase</button><button id="reset-delivered" class="secondary">Resetează livrările</button></div><button id="finish-job" class="finish-job" type="button" hidden>Încheie jobul</button>
+        <button id="toggle-route-view-mobile" class="mobile-map-toggle" type="button">Vezi harta</button>
+        <div class="progress-card"><div class="progress-top"><strong id="progress-label">0 / 0 livrate</strong><span id="progress-percent">0%</span></div><div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div></div>
+        <div id="next-stop-card" class="next-stop-card" hidden><div><span id="next-label" class="next-label">URMĂTOAREA OPRIRE</span><strong id="next-stop-address">—</strong></div><div class="navigation-actions"><button id="navigate-next" class="navigate-button">Navighează</button><div id="navigation-options" class="navigation-options" hidden><button id="open-google-maps" type="button">Google Maps</button><button id="open-waze" type="button">Waze</button></div></div></div>
+        <p class="delivery-hint">Apasă „Livrat” după ce predai coletul. Oprirea se colorează verde și rămâne salvată pe acest dispozitiv.</p>
+        <ol id="delivery-list" class="delivery-list"></ol>
+      </section>
+      <section class="route-map-panel"><div class="route-map-toolbar"><button id="toggle-route-view" class="view-toggle" type="button">Vezi lista</button></div><button id="map-back-to-list" class="map-back-button" type="button">← Înapoi la listă</button><div id="route-map"></div><section id="route-list-full" class="route-list-full" hidden><h2>Lista completă a traseului</h2><ol id="delivery-list-full"></ol></section></section>
+    </section>
+  </main>
+  <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="routes.js" type="module"></script>
+</body>
+</html>

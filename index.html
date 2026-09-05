@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>Route Optimizer România</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="site-sidebar"><div class="brand-mark">RO</div><strong class="brand-name">Route Optimizer</strong><nav class="sidebar-nav" aria-label="Navigare principală"><a class="nav-link active" href="index.html">⚙ Optimizare rută</a><a class="nav-link" href="routes.html">✓ Ruta curierului</a><a class="nav-link" href="completed.html">▣ Stopuri finalizate</a></nav><p class="sidebar-note">OpenStreetMap<br />Optimizare locală</p></aside>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">PROTOTIP LOCAL</p>
+          <h1>Route Optimizer România</h1>
+          <p class="subtitle">Adaugă adresele, iar aplicația le găsește automat și le afișează pe hartă.</p>
+        </div>
+        <span class="status-pill" id="status">Pregătit</span>
+      </header>
+
+      <section class="workspace">
+        <aside class="panel">
+          <h2>Rută nouă</h2>
+          <label>Punct de plecare</label>
+          <div class="input-row">
+            <button id="current-start-location" class="location-inline" type="button" title="Folosește locația actuală pentru Start">Locația actuală</button>
+            <input id="start-address" list="address-suggestions" type="text" placeholder="Ex: Strada ... București" autocomplete="street-address" />
+            <button class="mic-button" data-input="start-address" type="button" title="Spune adresa de Start">🎙</button>
+            <button id="set-start" class="secondary">Adaugă</button>
+          </div>
+          <label for="end-address">Punct final</label>
+          <div class="input-row">
+            <button id="current-end-location" class="location-inline" type="button" title="Folosește locația actuală pentru Finish">Locația actuală</button>
+            <input id="end-address" list="address-suggestions" type="text" placeholder="Ex: Depozit sau adresă finală" autocomplete="street-address" />
+            <button class="mic-button" data-input="end-address" type="button" title="Spune adresa de Finish">🎙</button>
+            <button id="set-end" class="secondary">Adaugă</button>
+          </div>
+
+          <label for="stop-address">Adresă de livrare</label>
+          <div class="input-row">
+            <input id="stop-address" list="address-suggestions" type="text" placeholder="Ex: Strada ... Cluj-Napoca" autocomplete="street-address" /><datalist id="address-suggestions"></datalist>
+            <button class="mic-button" data-input="stop-address" type="button" title="Spune adresa de livrare">🎙</button>
+            <button id="add-stop">Adaugă</button>
+          </div>
+          <button id="bulk-add" class="bulk-button" type="button">＋ Adaugă rapid mai multe adrese</button>
+          <div class="options-row">
+            <label class="check-label"><input id="return-to-start" type="checkbox" /> Întoarcere la plecare</label>
+            <label class="service-label" for="service-time">Staționare <input id="service-time" type="number" min="0" max="120" value="5" /> min</label>
+          </div>
+          <p class="hint">Scrie adresa cât mai complet: stradă, număr, oraș. Poți folosi și locația GPS a telefonului.</p>
+          <label for="csv-file" class="file-label">Importă opriri din CSV</label>
+          <input id="csv-file" type="file" accept=".csv,text/csv" />
+          <button id="export-csv" class="export-button" type="button">Exportă ruta CSV</button>
+          <div class="backup-row"><button id="export-backup" type="button">Backup JSON</button><button id="import-backup-button" type="button">Încarcă backup</button><input id="import-backup" type="file" accept="application/json,.json" hidden /></div>
+
+          <div class="toolbar">
+            <button id="optimize" class="primary" disabled>Optimizează ruta</button>
+            <button id="finish-route" class="finish-button" type="button" hidden>Finalizează ruta</button>
+            <button id="clear-all" class="ghost">Șterge tot</button>
+          </div>
+          <button id="review-route" class="review-button" type="button" hidden>Verifică adresele introduse</button>
+
+          <div class="summary" id="summary" hidden>
+            <div><strong id="stop-count">0</strong><span>opriri</span></div>
+            <div><strong id="route-distance">—</strong><span>distanță</span></div>
+            <div><strong id="route-duration">—</strong><span>durată</span></div>
+          </div>
+
+          <ol id="stops-list" class="stops-list" aria-live="polite"></ol>
+        </aside>
+        <section class="map-panel">
+          <div class="map-toolbar"><strong class="table-title">Ordinea optimizării</strong><button id="toggle-edit-order" class="view-toggle" type="button">Editează ordinea</button></div>
+          <div id="map" aria-label="Harta rutei"></div>
+          <section id="route-list-view" class="route-list-view">
+            <div class="route-list-header"><h2>Ordinea traseului</h2><span id="list-route-status">Adresele introduse</span></div>
+            <ol id="route-details" class="route-details"></ol>
+          </section>
+          <p class="map-note">Harta: © OpenStreetMap contributors · Căutare: Nominatim</p>
+        </section>
+      </section>
+    </main>
+    <section id="review-modal" class="review-modal" hidden><div class="review-card"><div class="review-header"><div><p class="eyebrow">PASUL 2</p><h2>Verifică adresele</h2><p>Confirmă că toate opririle sunt prezente înainte de optimizare.</p></div><div class="review-header-actions"><button id="toggle-review-map" class="ghost" type="button">Vezi harta</button><button id="back-to-entry" class="ghost" type="button">← Înapoi</button></div></div><ol id="review-items" class="review-items"></ol><div id="review-map" class="review-map" hidden></div><button id="optimize-from-review" class="primary review-optimize" type="button">Optimizează ruta</button></div></section>
+    <section id="bulk-modal" class="review-modal" hidden><div class="review-card bulk-card"><div class="review-header"><div><p class="eyebrow">ADĂUGARE RAPIDĂ</p><h2>Adresele livrărilor</h2><p>O adresă pe fiecare rând. Poți dicta sau scana o etichetă.</p></div><button id="close-bulk" class="ghost" type="button">← Înapoi</button></div><textarea id="bulk-addresses" rows="8" placeholder="Strada Exemplu 1, București&#10;Strada Exemplu 2, București"></textarea><div class="bulk-actions"><button id="bulk-voice" type="button">🎙 Dictează</button><button id="bulk-camera" type="button">▣ Scanează cu camera</button><input id="bulk-image" type="file" accept="image/*" capture="environment" hidden /></div><button id="bulk-done" class="primary review-optimize" type="button">Am terminat</button></div></section>
+    <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
+
+
