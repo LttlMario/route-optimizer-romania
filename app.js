@@ -1,4 +1,4 @@
-import { saveSnapshot } from './storage.js';
+import { saveSnapshot, saveNamedRoute, listSavedRoutes } from './storage.js';
 const map = L.map('map').setView([45.9432, 24.9668], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 const mapElement = document.getElementById('map');
@@ -109,7 +109,10 @@ $('#add-scan-text').addEventListener('click', addScannedTextToList);
 $('#clear-scan-text').addEventListener('click', () => { $('#scan-text').value = ''; $('#scan-result').hidden = true; });
 $('#finish-route').addEventListener('click', () => { saveState(); window.location.href = 'routes.html'; });
 $('#return-to-start').addEventListener('change', () => { saveState(); renderRouteDetails(); }); $('#service-time').addEventListener('change', saveState); $('#departure-time').addEventListener('change', saveState);
-loadState(); refreshAddressSuggestions(); drawMarkers(); refreshList();
+async function refreshSavedRoutes() { const select = $('#saved-routes'); if (!select) return; const routes = await listSavedRoutes(); select.innerHTML = '<option value="">Rute salvate</option>'; routes.sort((a, b) => String(b.savedAt).localeCompare(String(a.savedAt))).forEach((route) => { const option = document.createElement('option'); option.value = route.id; option.textContent = `${route.name} · ${new Date(route.savedAt).toLocaleDateString('ro-RO')}`; select.append(option); }); }
+$('#save-named-route').addEventListener('click', async () => { const name = $('#route-name').value.trim() || `Ruta ${new Date().toLocaleDateString('ro-RO')}`; await saveNamedRoute(name, { start: state.start, end: state.end, stops: state.stops, returnToStart: $('#return-to-start').checked, serviceTime: $('#service-time').value, departureTime: $('#departure-time').value }); await refreshSavedRoutes(); setStatus(`Ruta „${name}” a fost salvată local`); });
+$('#load-named-route').addEventListener('click', async () => { const id = $('#saved-routes').value; if (!id) return; const route = (await listSavedRoutes()).find((item) => item.id === id); if (!route) return; applyImportedBackup(route.data); setStatus(`Ruta „${route.name}” a fost încărcată`); });
+loadState(); refreshAddressSuggestions(); drawMarkers(); refreshList(); refreshSavedRoutes();
 const toggleView = $('#toggle-view'); if (toggleView) toggleView.addEventListener('click', () => { const listView = $('#route-list-view'); const showingList = !listView.hidden; listView.hidden = showingList; $('#map').style.display = showingList ? 'block' : 'none'; $('.map-note').hidden = !showingList; toggleView.textContent = showingList ? 'Vezi lista' : 'Vezi harta'; if (showingList) setTimeout(() => map.invalidateSize(), 0); });
 
 
