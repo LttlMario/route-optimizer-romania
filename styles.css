@@ -139,6 +139,9 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .stop-locked { border-left: 3px solid #f0b55e; padding-left: 8px; }
 .lock-stop { padding: 3px 7px; background: transparent; color: #8ce5d0; font-size: .85rem; }
 .priority-input { width: 42px; min-height: 30px; padding: 3px 5px; border: 1px solid #31534d; border-radius: 7px; background: #0e201d; color: #f3fffb; text-align: center; font-weight: 700; }
+.window-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; color: #8aa19b; font-size: .72rem; }
+.window-controls label { display: inline-flex; align-items: center; gap: 4px; }
+.window-controls input { width: 88px; min-height: 27px; padding: 3px 5px; }
 .saved-route-row { display: grid; grid-template-columns: 1.4fr auto 1.3fr auto; gap: 6px; margin-top: 8px; }
 .saved-route-row input, .saved-route-row select { min-width: 0; }
 @media (max-width: 560px) { .saved-route-row { grid-template-columns: 1fr 1fr; } .saved-route-row input, .saved-route-row select { grid-column: span 2; } }
