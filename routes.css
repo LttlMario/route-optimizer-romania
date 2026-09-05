@@ -53,6 +53,13 @@
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
 .navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
 .navigation-preference select { min-height:38px; }
+.review-modal { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; overflow: auto; padding: 24px; background: rgba(7, 16, 14, .84); }
+.review-modal[hidden] { display: none !important; }
+.review-card { width: min(680px, calc(100vw - 48px)); max-height: calc(100vh - 48px); overflow: auto; padding: 24px; border: 1px solid #3b514c; border-radius: 16px; background: #172321; box-shadow: 0 18px 60px #0009; }
+.review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.review-header h2 { margin: 0 0 6px; }
+.review-header p:not(.eyebrow) { color: #9bb2ac; font-size: .85rem; }
+@media (max-width: 800px) { .review-modal { padding: 14px; } .review-card { width: min(100%, 640px); max-height: calc(100vh - 28px); padding: 18px; } }
 html, body { overflow-x: hidden; }
 @media (min-width: 801px) {
   .route-shell, .history-shell { max-width: calc(100vw - 218px); overflow-x: hidden; }
