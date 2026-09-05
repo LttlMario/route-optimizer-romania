@@ -1,4 +1,4 @@
-const CACHE_NAME = 'route-optimizer-pwa-v22';
+const CACHE_NAME = 'route-optimizer-pwa-v23';
 const APP_SHELL = [
   './', './index.html', './routes.html', './completed.html',
   './styles.css', './routes.css', './app.js', './routes.js', './completed.js',

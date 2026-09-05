@@ -49,6 +49,7 @@
 
 .status-card select, .status-card textarea { width: 100%; margin: 5px 0 12px; padding: 11px; border: 1px solid #3b514c; border-radius: 9px; background: #101a18; color: #e5f3ef; font: inherit; }
 .status-card textarea { resize: vertical; }
+.delivery-timer { display: block; margin-top: 10px; color: #6ee7c8; font-size: .9rem; letter-spacing: .04em; }
 .status-badge { display: inline-block; margin-top: 5px; padding: 4px 7px; border-radius: 6px; color: #09211c !important; font-size: .7rem !important; font-weight: 800; }
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
 .navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
