@@ -144,4 +144,6 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .window-controls input { width: 88px; min-height: 27px; padding: 3px 5px; }
 .saved-route-row { display: grid; grid-template-columns: 1.4fr auto 1.3fr auto; gap: 6px; margin-top: 8px; }
 .saved-route-row input, .saved-route-row select { min-width: 0; }
+.optimization-mode { display: flex; align-items: center; gap: 8px; margin: 10px 0; color: #b6cbc5; }
+.optimization-mode select { flex: 1; min-height: 38px; padding: 8px; border: 1px solid #3b514c; border-radius: 9px; background: #101a18; color: #e5f3ef; font: inherit; }
 @media (max-width: 560px) { .saved-route-row { grid-template-columns: 1fr 1fr; } .saved-route-row input, .saved-route-row select { grid-column: span 2; } }

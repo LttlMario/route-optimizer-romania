@@ -49,7 +49,7 @@
             <button class="mic-button" data-input="stop-address" type="button" title="Spune adresa de livrare">🎙</button>
             <button id="add-stop">Adaugă</button>
           </div>
-          <label for="departure-time">Ora de început a rutei</label><input id="departure-time" type="time" aria-describedby="departure-time-hint" /><p id="departure-time-hint" class="hint">ETA-urile se calculează de la această oră. Lasă gol pentru ora curentă.</p><button id="bulk-add" class="bulk-button" type="button">＋ Adaugă rapid mai multe adrese</button>
+          <label for="departure-time">Ora de început a rutei</label><input id="departure-time" type="time" aria-describedby="departure-time-hint" /><p id="departure-time-hint" class="hint">ETA-urile se calculează de la această oră. Lasă gol pentru ora curentă.</p><label class="optimization-mode" for="optimization-mode">Mod optimizare<select id="optimization-mode"><option value="balanced">Echilibrat</option><option value="fastest">Cel mai rapid</option><option value="shortest">Distanță minimă</option><option value="priority">Priorități</option></select></label><button id="bulk-add" class="bulk-button" type="button">＋ Adaugă rapid mai multe adrese</button>
           <div class="options-row">
             <label class="check-label"><input id="return-to-start" type="checkbox" /> Întoarcere la plecare</label>
             <label class="service-label" for="service-time">Staționare <input id="service-time" type="number" min="0" max="120" value="5" /> min</label>
@@ -64,7 +64,7 @@
           <div class="toolbar">
             <button id="optimize" class="primary" disabled>Optimizează ruta</button>
             <button id="finish-route" class="finish-button" type="button" hidden>Finalizează ruta</button>
-<button id="undo-change" class="ghost" type="button">Anulează</button><button id="clear-all" class="ghost">Șterge tot</button>
+<button id="undo-change" class="ghost" type="button">Anulează</button><button id="redo-change" class="ghost" type="button">Refă</button><button id="clear-all" class="ghost">Șterge tot</button>
           </div>
           <button id="review-route" class="review-button" type="button" hidden>Verifică adresele introduse</button>
 
