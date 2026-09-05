@@ -127,3 +127,5 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .scan-result-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .scan-result-actions button { padding: 8px 6px; background: #21433c; color: #8ce5d0; font-size: .74rem; }
 @media (max-width: 520px) { .scan-result-actions { grid-template-columns: 1fr; } }
+
+.eta-label { display: block; margin-top: 4px; color: #6ee7c8; font-size: .75rem; font-weight: 700; }
