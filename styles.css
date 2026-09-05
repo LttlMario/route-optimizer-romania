@@ -120,3 +120,10 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .install-app { padding: 9px 12px; border: 1px solid #36b89b; border-radius: 9px; background: #21433c; color: #8ce5d0; font-size: .78rem; font-weight: 800; }
 .install-app:hover { background: #36b89b; color: #09211c; }
 @media (max-width: 800px) { .install-app { margin: 10px auto 0; } }
+
+.scan-result { margin-top: 14px; padding: 12px; border: 1px solid #52726a; border-radius: 10px; background: #101a18; }
+.scan-result label { margin: 0 0 7px; color: #8ce5d0; font-size: .78rem; }
+.scan-result textarea { margin: 0 0 8px; }
+.scan-result-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.scan-result-actions button { padding: 8px 6px; background: #21433c; color: #8ce5d0; font-size: .74rem; }
+@media (max-width: 520px) { .scan-result-actions { grid-template-columns: 1fr; } }
