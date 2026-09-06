@@ -49,3 +49,4 @@ $('#close-status-modal').addEventListener('click', () => clearInterval(deliveryT
 
 function addRouteBreak(minutes = 5) { const delta = minutes * 60000; state.stops.filter((stop) => !stop.delivered && stop.etaAt).forEach((stop) => { stop.etaAt += delta; stop.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(stop.etaAt)); }); if (state.end?.etaAt) { state.end.etaAt += delta; state.end.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(state.end.etaAt)); } save(); renderList(); updateProgress(); setStatus(`Pauză de ${minutes} minute adăugată`); }
 $('#add-break')?.addEventListener('click', () => addRouteBreak(5));
+$('#print-route')?.addEventListener('click', () => window.print());
