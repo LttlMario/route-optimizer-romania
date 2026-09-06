@@ -47,3 +47,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'function setStatus') { throw 'Pagina
 if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*Marchează stopul' -or (Get-Content -Raw routes.js) -notmatch 'aria-label.*Navighează către Finish') { throw 'Butoanele de livrare nu au etichete accesibile.' }
 if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*urmărirea GPS') { throw 'Butonul GPS nu are etichetă accesibilă.' }
 if ((Get-Content -Raw app.js) -notmatch 'response\.status === 429') { throw 'Geocoderul nu tratează limitarea Nominatim.' }
+if ((Get-Content -Raw app.js) -notmatch 'navigator\.onLine === false') { throw 'Geocoderul nu are mesaj offline.' }
