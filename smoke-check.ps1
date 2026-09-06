@@ -57,3 +57,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'hasOwnProperty\.call\(STATUS_LABELS'
 if ((Get-Content -Raw routes.html) -notmatch 'next-stop-address[^>]*aria-live="polite"') { throw 'Următorul stop nu are anunț accesibil.' }
 if ((Get-Content -Raw routes.js) -notmatch 'setInterval\(\(\) => save\(\), 30000\)') { throw 'Ruta nu are autosalvare periodică.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB nu închide conexiunile după scriere.' }
+if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\); resolve') { throw 'IndexedDB nu închide conexiunile după citire.' }
