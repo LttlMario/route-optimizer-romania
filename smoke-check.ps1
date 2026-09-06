@@ -14,7 +14,7 @@ if ($sw -notmatch "CACHE_NAME") { throw 'Service worker fără cache configurat.
 if ($sw -notmatch 'tile\.openstreetmap\.org') { throw 'Service worker fără cache pentru dalele OpenStreetMap.' }
 if ((Get-Content -Raw index.html) -notmatch 'src="\./leaflet\.js"' -or (Get-Content -Raw routes.html) -notmatch 'src="\./leaflet\.js"') { throw 'Paginile nu folosesc biblioteca Leaflet locală.' }
 $htmlChecks = @{
-  'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads')
+  'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads', 'vehicle-capacity')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next', 'wake-lock', 'add-delay')
   'completed.html' = @('history-list', 'history-filter', 'export-history', 'clear-history')
 }
@@ -91,3 +91,6 @@ if ((Get-Content -Raw routes.js) -notmatch 'arrivalAt = stop.arrivalAt.*save\(\)
 if ((Get-Content -Raw app.js) -notmatch 'async function waitForGeocoder') { throw 'Limitarea cererilor Nominatim lipsește.' }
 
 if ((Get-Content -Raw routes.js) -notmatch 'keydown.*Escape') { throw 'Închiderea rapidă cu Escape lipsește.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'packageCount') { throw 'Numărul de colete nu este implementat.' }
+if ((Get-Content -Raw app.js) -notmatch 'Capacitatea vehiculului este depășită') { throw 'Validarea capacității lipsește.' }
