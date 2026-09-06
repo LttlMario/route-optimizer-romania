@@ -26,4 +26,6 @@ if ((Get-Content -Raw app.js) -notmatch 'invalidateOptimization') { throw 'Optim
 if ((Get-Content -Raw completed.js) -notmatch 'export-history') { throw 'Istoricul nu are exportul CSV.' }
 if ((Get-Content -Raw routes.js) -notmatch "\$\('#complete-next'\)\?\.addEventListener") { throw 'Butonul pentru următorul stop nu are handler.' }
 if ((Get-Content -Raw app.js) -notmatch 'result\[result\.length - 1\] = endIndex') { throw 'Optimizerul nu fixează Finish-ul la final.' }
+if ((Get-Content -Raw app.js) -notmatch 'fetchWithTimeout') { throw 'Rutarea OSRM nu are timeout.' }
+if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
