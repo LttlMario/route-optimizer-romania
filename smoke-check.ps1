@@ -76,3 +76,6 @@ if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\); resolve') { throw 'I
 if ((Get-Content -Raw routes.js) -notmatch 'completeButton\.hidden = !next') { throw 'Butonul de livrare nu se ascunde pentru Finish.' }
 
 if ((Get-Content -Raw app.js) -notmatch 'function exactOrder') { throw 'Optimizarea exactă pentru rute mici lipsește.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'function getTrafficFactor') { throw 'Factorul automat de trafic lipsește.' }
+if ((Get-Content -Raw index.html) -notmatch 'value=.*auto') { throw 'Modul automat de trafic lipsește.' }
