@@ -65,12 +65,37 @@ $('#add-break')?.addEventListener('click', () => addRouteBreak(5)); $('#wake-loc
 $('#print-route')?.addEventListener('click', () => window.print());
 document.querySelector('#share-route')?.addEventListener('click', async () => { const stops = state.stops.map((stop, index) => `${index + 1}. ${stop.display_name || stop.input || ''}${stop.etaLabel ? ` · ETA ${stop.etaLabel}` : ''}${stop.statusLabel ? ` · ${stop.statusLabel}` : ''}`); const finish = state.end ? `\nFinish: ${state.end.display_name || state.end.input || ''}${state.end.etaLabel ? ` · ETA ${state.end.etaLabel}` : ''}` : ''; const text = `Ruta curierului\n${stops.join('\n')}${finish}`; if (navigator.share) { try { await navigator.share({ title: 'Ruta curierului', text }); return; } catch (error) { if (error.name === 'AbortError') return; } } try { await navigator.clipboard.writeText(text); setStatus('Ruta a fost copiată pentru distribuire'); } catch { setStatus('Nu am putut distribui ruta.', true); } });
 
-const deliveryListObserver = new MutationObserver(() => { const list = $('#delivery-list'); list?.querySelectorAll('.deliver-button').forEach((button) => { if (button.previousElementSibling?.classList.contains('navigate-stop')) return; const nav = document.createElement('button'); nav.className = 'navigate-stop'; nav.type = 'button'; nav.textContent = 'Navighează'; nav.dataset.index = button.dataset.index; nav.addEventListener('click', () => openPreferredNavigation(state.stops[Number(nav.dataset.index)], preferredNavigationValue())); button.parentElement ? button.parentElement.insertBefore(nav, button) : button.before(nav); }); });
-deliveryListObserver.observe($('#delivery-list'), { childList: true, subtree: true });
+let decoratingNavigation = false;
+const decorateNavigationButtons = () => {
+  if (decoratingNavigation) return;
+  decoratingNavigation = true;
+  try {
+    const list = $('#delivery-list');
+    list?.querySelectorAll('.deliver-button').forEach((button) => {
+      if (button.parentElement?.querySelector(':scope > .navigate-stop')) return;
+      const nav = document.createElement('button');
+      nav.className = 'navigate-stop';
+      nav.type = 'button';
+      nav.textContent = 'Navighează';
+      nav.dataset.index = button.dataset.index;
+      nav.addEventListener('click', () => openPreferredNavigation(state.stops[Number(nav.dataset.index)], preferredNavigationValue()));
+      button.parentElement ? button.parentElement.insertBefore(nav, button) : button.before(nav);
+    });
+  } finally { decoratingNavigation = false; }
+};
+const deliveryListObserver = new MutationObserver(decorateNavigationButtons);
+const deliveryList = $('#delivery-list');
+if (deliveryList) deliveryListObserver.observe(deliveryList, { childList: true });
 
 // Show route delay consistently on active delivery items and Finish.
 function recalculateRemainingEta() { const updatedStops = state.stops.filter((stop) => stop.updatedAt && stop.etaAt); if (!updatedStops.length) { state.routeDelayMinutes = 0; state.routeDelayApplied = 0; return; } const latest = updatedStops.reduce((a, b) => new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b); const totalDelay = Math.max(0, Date.now() - new Date(latest.etaAt).getTime()); const previousDelay = Number(state.routeDelayApplied || 0); const delta = Math.max(0, totalDelay - previousDelay); state.routeDelayMinutes = Math.round(totalDelay / 60000); state.routeDelayApplied = totalDelay; if (!delta) return; state.stops.filter((stop) => !isProcessed(stop) && stop.etaAt).forEach((stop) => { stop.etaAt += delta; stop.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(stop.etaAt)); }); if (state.end?.etaAt) { state.end.etaAt += delta; state.end.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(state.end.etaAt)); } }
-function decorateRouteDelay() { const delay = Number(state.routeDelayMinutes || 0); const labelText = `Întârziat cu ${delay} min`; document.querySelectorAll('#delivery-list .delivery-item > div > span').forEach((span) => { const existing = span.querySelector('.delay-label'); if (delay <= 0) { existing?.remove(); return; } if (existing?.textContent === labelText) return; existing?.remove(); const label = document.createElement('small'); label.className = 'delay-label'; label.textContent = labelText; span.append(label); }); const meta = document.querySelector('#route-meta'); if (meta && delay > 0 && !meta.textContent.includes('întârziere')) meta.textContent += ` · întârziere ${delay} min`; }const delayObserver = new MutationObserver(() => decorateRouteDelay()); delayObserver.observe(document.querySelector('#delivery-list'), { childList: true, subtree: true });
+function decorateRouteDelay() { const delay = Number(state.routeDelayMinutes || 0); const labelText = `Întârziat cu ${delay} min`; document.querySelectorAll('#delivery-list .delivery-item > div > span').forEach((span) => { const existing = span.querySelector('.delay-label'); if (delay <= 0) { existing?.remove(); return; } if (existing?.textContent === labelText) return; existing?.remove(); const label = document.createElement('small'); label.className = 'delay-label'; label.textContent = labelText; span.append(label); }); const meta = document.querySelector('#route-meta'); if (meta && delay > 0 && !meta.textContent.includes('întârziere')) meta.textContent += ` · întârziere ${delay} min`; }let decoratingDelay = false;
+const delayObserver = new MutationObserver(() => {
+  if (decoratingDelay) return;
+  decoratingDelay = true;
+  try { decorateRouteDelay(); } finally { decoratingDelay = false; }
+});
+if (deliveryList) delayObserver.observe(deliveryList, { childList: true });
 
 $('#complete-next')?.addEventListener('click', () => { const stop = nextStop(); if (!stop || stop.isFinish) return; openStatusEditor(state.stops.indexOf(stop)); });
 
