@@ -165,3 +165,20 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .feasibility-issues li + li { margin-top: 4px; }
 .update-app { padding: 9px 12px; border: 1px solid #f2b35d; border-radius: 9px; background: #5a391c; color: #ffd59a; font-size: .78rem; font-weight: 800; }
 .update-app:hover { background: #f2b35d; color: #241407; }
+.management-links { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 0; }
+.management-links a { color:#8ce5d0; font-size:.78rem; font-weight:700; text-decoration:none; }
+.management-links a:hover { text-decoration:underline; }
+.auxiliary-shell { min-height:calc(100vh - 42px); }
+.settings-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; width:min(980px, 100%); margin:0 auto; }
+.settings-card, .saved-card { padding:22px; border:1px solid #2a3c39; border-radius:16px; background:#172321; box-shadow:0 16px 45px #00000040; }
+.settings-card h2 { margin-bottom:14px; font-size:1.05rem; }
+.settings-card select, .settings-card input { width:100%; min-height:42px; }
+.settings-description { color:#9bb2ac; font-size:.84rem; line-height:1.5; }
+.settings-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.settings-card hr { margin:20px 0; border:0; border-top:1px solid #2a3c39; }
+.danger-button { background:#4a252f; color:#ffb4b4; }
+.diagnostic-list { display:grid; grid-template-columns:1fr auto; gap:8px 14px; margin:0 0 16px; font-size:.82rem; }
+.diagnostic-list dt { color:#9bb2ac; }.diagnostic-list dd { margin:0; color:#8ee5b6; text-align:right; }
+.help-card details { padding:10px 0; border-top:1px solid #2a3c39; color:#b6cbc5; }.help-card summary { cursor:pointer; color:#8ce5d0; font-weight:700; }.help-card p { margin:9px 0 0; font-size:.82rem; line-height:1.5; }
+.saved-card { width:min(900px,100%); margin:0 auto; }.saved-routes-list { display:grid; gap:10px; }.saved-route-card { padding:16px; border:1px solid #2a3c39; border-radius:10px; background:#101a18; }.saved-route-card h2 { margin:0 0 5px; font-size:1rem; }.saved-route-meta { margin:0 0 12px; color:#8aa19b; font-size:.8rem; }.saved-route-actions { display:flex; flex-wrap:wrap; gap:8px; }
+@media (max-width:800px) { .settings-grid { grid-template-columns:1fr; width:100%; }.settings-card,.saved-card { padding:18px; }.management-links { justify-content:center; }.site-sidebar .sidebar-nav { gap:4px; }.site-sidebar .nav-link { padding:9px 7px; font-size:.72rem; } }

@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$required = @('index.html', 'routes.html', 'completed.html', 'app.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json', 'leaflet.js', 'leaflet.css', 'ocr/tesseract.min.js', 'ocr/worker.min.js', 'ocr/tesseract-core.wasm.js', 'ocr/tesseract-core.wasm', 'ocr/lang-data/ron.traineddata.gz')
+$required = @('index.html', 'routes.html', 'completed.html', 'saved.html', 'settings.html', 'app.js', 'saved.js', 'settings.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json', 'leaflet.js', 'leaflet.css', 'ocr/tesseract.min.js', 'ocr/worker.min.js', 'ocr/tesseract-core.wasm.js', 'ocr/tesseract-core.wasm', 'ocr/lang-data/ron.traineddata.gz')
 foreach ($file in $required) {
   if (-not (Test-Path -LiteralPath $file)) { throw "Lipsește fișierul obligatoriu: $file" }
 }
@@ -17,6 +17,8 @@ $htmlChecks = @{
   'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads', 'vehicle-capacity', 'feasibility-report', 'feasibility-badge')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next', 'wake-lock', 'add-delay')
   'completed.html' = @('history-list', 'history-filter', 'export-history', 'clear-history')
+  'saved.html' = @('saved-routes-list', 'saved-empty')
+  'settings.html' = @('setting-navigation', 'setting-profile', 'export-settings-backup', 'import-settings-backup', 'diagnostic-list', 'clear-local-data')
 }
 foreach ($entry in $htmlChecks.GetEnumerator()) {
   $html = Get-Content -Raw $entry.Key
@@ -96,6 +98,7 @@ if ((Get-Content -Raw routes.js) -notmatch 'keydown.*Escape') { throw 'Închider
 if ((Get-Content -Raw app.js) -notmatch 'packageCount') { throw 'Numărul de colete nu este implementat.' }
 if ((Get-Content -Raw app.js) -notmatch 'Capacitatea vehiculului este depășită') { throw 'Validarea capacității lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'renderFeasibilityReport') { throw 'Raportul de fezabilitate lipsește.' }
+if ((Get-Content -Raw routes.js) -notmatch 'preferredNavigationValue') { throw 'Preferința de navigare nu este centralizată.' }
 if ((Get-Content -Raw pwa.js) -notmatch 'SKIP_WAITING' -or (Get-Content -Raw pwa.js) -notmatch 'Actualizează aplicația') { throw 'Fluxul de actualizare PWA lipsește.' }
 if ((Get-Content -Raw sw.js) -notmatch 'event\.data\?\.type === .SKIP_WAITING.') { throw 'Service worker-ul nu acceptă actualizarea la cerere.' }
 

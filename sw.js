@@ -1,10 +1,10 @@
-const CACHE_NAME = 'route-optimizer-pwa-v193';
+const CACHE_NAME = 'route-optimizer-pwa-v194';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
 async function cacheRuntimeResponse(cache, request, response) { await cache.put(request, response); const keys = await cache.keys(); if (keys.length > 300) await Promise.all(keys.slice(0, keys.length - 300).map((key) => cache.delete(key))); }
 const APP_SHELL = [
-  './', './index.html', './routes.html', './completed.html',
+  './', './index.html', './routes.html', './completed.html', './saved.html', './settings.html',
   './styles.css', './routes.css', './app.js', './routes.js', './completed.js',
-  './manifest.json', './storage.js', './pwa.js', './leaflet.js', './leaflet.css', './icon-192.svg', './icon-512.svg', './ocr/tesseract.min.js', './ocr/worker.min.js', './ocr/tesseract-core.wasm.js', './ocr/tesseract-core.wasm', './ocr/lang-data/ron.traineddata.gz'
+  './manifest.json', './storage.js', './pwa.js', './saved.js', './settings.js', './leaflet.js', './leaflet.css', './icon-192.svg', './icon-512.svg', './ocr/tesseract.min.js', './ocr/worker.min.js', './ocr/tesseract-core.wasm.js', './ocr/tesseract-core.wasm', './ocr/lang-data/ron.traineddata.gz'
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => undefined));
@@ -29,6 +29,7 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
 
 
 

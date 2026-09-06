@@ -16,6 +16,8 @@ try {
     @{ Name = 'desktop'; Url = ($BaseUrl.TrimEnd('/') + '/index.html'); Size = '1440,1000'; Checks = @('vehicle-capacity', 'feasibility-report', 'review-route') },
     @{ Name = 'mobile'; Url = ($BaseUrl.TrimEnd('/') + '/index.html'); Size = '390,844'; Checks = @('vehicle-capacity', 'feasibility-report', 'review-route') },
     @{ Name = 'routes-mobile'; Url = ($BaseUrl.TrimEnd('/') + '/routes.html'); Size = '390,844'; Checks = @('delivery-list', 'route-map', 'navigate-next', 'complete-next') }
+    @{ Name = 'settings-mobile'; Url = ($BaseUrl.TrimEnd('/') + '/settings.html'); Size = '390,844'; Checks = @('setting-navigation', 'export-settings-backup', 'diagnostic-list') },
+    @{ Name = 'saved-mobile'; Url = ($BaseUrl.TrimEnd('/') + '/saved.html'); Size = '390,844'; Checks = @('saved-routes-list', 'saved-empty') }
   )
   foreach ($case in $cases) {
     $output = Join-Path $tempRoot ($case.Name + '.html')
