@@ -83,3 +83,5 @@ if ((Get-Content -Raw index.html) -notmatch 'value=.*auto') { throw 'Modul autom
 if ((Get-Content -Raw app.js) -notmatch 'const previous = editIndex') { throw 'Editarea stopului nu păstrează setările existente.' }
 
 if ((Get-Content -Raw app.js) -notmatch 'const serviceValue') { throw 'Editarea nu permite setarea staționării la zero.' }
+
+if ((Get-Content -Raw routes.js) -notmatch 'close-status-modal.*delivery-status-modal.*hidden = true') { throw 'Închiderea ferestrei de status nu ascunde modalul.' }
