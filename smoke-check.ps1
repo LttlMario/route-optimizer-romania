@@ -28,4 +28,5 @@ if ((Get-Content -Raw routes.js) -notmatch "\$\('#complete-next'\)\?\.addEventLi
 if ((Get-Content -Raw app.js) -notmatch 'result\[result\.length - 1\] = endIndex') { throw 'Optimizerul nu fixează Finish-ul la final.' }
 if ((Get-Content -Raw app.js) -notmatch 'fetchWithTimeout') { throw 'Rutarea OSRM nu are timeout.' }
 if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
+foreach ($provider in @('google', 'apple', 'waze')) { if ((Get-Content -Raw routes.js) -notmatch $provider) { throw "Navigarea $provider lipsește." } }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
