@@ -77,3 +77,4 @@ window.setInterval(refreshLiveDelay, 30000);
 
 
 
+window.addEventListener('pageshow', () => { recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
