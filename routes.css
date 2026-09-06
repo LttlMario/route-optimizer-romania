@@ -120,3 +120,5 @@ html, body { overflow-x: hidden; }
   .history-actions select, .history-actions button { width: 100%; min-height: 42px; }
   .history-card { padding: 14px; }
 }
+.history-list { list-style: none !important; padding-left: 0 !important; }
+.history-list > .history-day, .history-list > .history-entry { list-style: none !important; }
