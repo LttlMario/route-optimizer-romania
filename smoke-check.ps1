@@ -18,6 +18,6 @@ $htmlChecks = @{
 }
 foreach ($entry in $htmlChecks.GetEnumerator()) {
   $html = Get-Content -Raw $entry.Key
-  foreach ($id in $entry.Value) { if ($html -notmatch "id=\"$id\"") { throw "Lipsește controlul #$id din $($entry.Key)" } }
+  foreach ($id in $entry.Value) { if ($html -notmatch ('id="' + $id + '"')) { throw "Lipsește controlul #$id din $($entry.Key)" } }
 }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
