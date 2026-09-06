@@ -81,3 +81,4 @@ html, body { overflow-x: hidden; }
 
 .stop-action-buttons { display: inline-flex; flex-wrap: wrap; gap: 5px; align-items: center; }
 .navigate-stop { padding: 7px 9px; border: 1px solid #52726a; border-radius: 7px; background: #21433c; color: #8ce5d0; font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
+.delay-label{display:block!important;color:#ffb4b4!important;font-weight:800}.route-meta{line-height:1.4}
