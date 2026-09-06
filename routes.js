@@ -66,3 +66,6 @@ const delayObserver = new MutationObserver(() => decorateRouteDelay()); delayObs
 
 
 window.addEventListener('pagehide', () => { if (locationWatchId !== null && navigator.geolocation) navigator.geolocation.clearWatch(locationWatchId); });
+
+function refreshLiveDelay() { const next = nextStop(); if (!next?.etaAt) return; const lateMinutes = Math.max(0, Math.round((Date.now() - Number(next.etaAt)) / 60000)); if (lateMinutes > Number(state.routeDelayMinutes || 0)) { state.routeDelayMinutes = lateMinutes; decorateRouteDelay(); updateProgress(); } }
+window.setInterval(refreshLiveDelay, 30000);
