@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$required = @('index.html', 'routes.html', 'completed.html', 'app.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json')
+$required = @('index.html', 'routes.html', 'completed.html', 'app.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json', 'leaflet.js', 'leaflet.css')
 foreach ($file in $required) {
   if (-not (Test-Path -LiteralPath $file)) { throw "Lipsește fișierul obligatoriu: $file" }
 }
@@ -12,6 +12,7 @@ if (-not $manifest.name -or -not $manifest.start_url -or -not $manifest.icons) {
 $sw = Get-Content -Raw sw.js
 if ($sw -notmatch "CACHE_NAME") { throw 'Service worker fără cache configurat.' }
 if ($sw -notmatch 'tile\.openstreetmap\.org') { throw 'Service worker fără cache pentru dalele OpenStreetMap.' }
+if ((Get-Content -Raw index.html) -notmatch 'src="\./leaflet\.js"' -or (Get-Content -Raw routes.html) -notmatch 'src="\./leaflet\.js"') { throw 'Paginile nu folosesc biblioteca Leaflet locală.' }
 $htmlChecks = @{
   'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next')

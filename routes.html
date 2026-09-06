@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruta curierului</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="./leaflet.css" crossorigin="" />
   <link rel="stylesheet" href="routes.css" />
   <link rel="manifest" href="./manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -29,7 +29,7 @@
     </section>
   </main>
 <section id="delivery-status-modal" class="review-modal" hidden><div class="review-card status-card"><div class="review-header"><div><p class="eyebrow">ACTUALIZARE OPRIRE</p><h2>Ce s-a întâmplat?</h2><p>Salvează statusul și o notiță pentru acest stop.</p><strong id="delivery-timer" class="delivery-timer">Timp la oprire: 00:00</strong></div><button id="close-status-modal" class="ghost" type="button">Închide</button></div><label for="delivery-status">Status</label><select id="delivery-status"><option value="delivered">Livrat</option><option value="absent">Client absent</option><option value="wrong-address">Adresă greșită</option><option value="rescheduled">Reprogramat</option><option value="cancelled">Anulat</option></select><label for="delivery-note">Notiță</label><textarea id="delivery-note" rows="4" placeholder="Ex: clientul revine la ora 16:00"></textarea><button id="save-delivery-status" class="primary" type="button">Salvează statusul</button></div></section>  <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="./leaflet.js"></script>
   <script src="routes.js" type="module"></script>
   <script src="pwa.js"></script>
 </body>
