@@ -1,25 +1,29 @@
 # Route Optimizer România
 
-Optimizer local de rute pentru curieri, construit în HTML, CSS și JavaScript.
+Aplicație locală pentru planificarea și parcurgerea rutelor de curierat în România.
 
-## Funcții
+## Pornire locală
 
-- geocodare OpenStreetMap/Nominatim pentru România;
-- optimizare cu OSRM și timp estimat de condus;
-- pornire, finish și întoarcere la plecare;
-- editare și renumerotare manuală a stopurilor;
-- flux de livrare cu statusuri și istoric local;
-- navigare către următorul stop prin Google Maps sau Waze;
-- import CSV, export CSV și backup JSON;
-- sugestii și cache local pentru adrese;
-- interfață responsive pentru telefon și desktop.
+Deschide folderul în VS Code și pornește un server static local, de exemplu extensia **Live Server**. Deschiderea directă cu `file://` poate bloca modulele JavaScript și unele funcții ale browserului.
 
-## Rulare locală
+Pagina principală este `index.html`. După optimizare, `routes.html` este pagina de parcurs a curierului, iar `completed.html` conține istoricul local.
 
-Deschide folderul într-un server static local, de exemplu Live Server în VS Code. Deschiderea directă prin `file://` poate limita unele funcții de browser.
+## Funcții principale
 
-## GitHub Pages
+- geocodare Nominatim și alegerea rezultatului exact;
+- optimizare OSRM cu priorități, ferestre orare, profil de vehicul, trafic estimat și drumuri de evitat;
+- ETA, pauze, statusuri de livrare, notițe și navigare Google Maps, Apple Maps și Waze;
+- editare prin drag-and-drop, mutare, swap, undo/redo și stopuri blocate;
+- backup JSON, export CSV, rute numite și checkpoint zilnic în IndexedDB;
+- OCR, coduri de bare/QR și dictare vocală;
+- PWA cu cache local pentru shell, hartă și OCR după prima utilizare online.
 
-Proiectul este static și poate fi publicat direct din branch-ul `main`, folderul root. Nu folosește bază de date sau chei API.
+## Verificare
 
-Serviciile publice OpenStreetMap Nominatim și OSRM au limite de utilizare; pentru trafic intens sau utilizare comercială ar trebui configurate servicii dedicate.
+În PowerShell, din folderul proiectului, rulează:
+
+```powershell
+./smoke-check.ps1
+```
+
+Nominatim, OSRM și hărțile OpenStreetMap sunt servicii publice. Pentru utilizare intensă sau comercială trebuie respectate limitele și politicile lor.
