@@ -1,4 +1,4 @@
-const CACHE_NAME = 'route-optimizer-pwa-v88';
+const CACHE_NAME = 'route-optimizer-pwa-v89';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
 const APP_SHELL = [
   './', './index.html', './routes.html', './completed.html',
@@ -15,8 +15,9 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   const externalAsset = ['unpkg.com', 'cdn.jsdelivr.net'].includes(url.hostname);
-  if (url.origin !== self.location.origin && !externalAsset) return;
-  if (externalAsset) {
+  const mapTile = url.hostname.endsWith('tile.openstreetmap.org');
+  if (url.origin !== self.location.origin && !externalAsset && !mapTile) return;
+  if (externalAsset || mapTile) {
     event.respondWith(caches.open(RUNTIME_CACHE).then((cache) => cache.match(event.request).then((cached) => cached || fetch(event.request).then((response) => { cache.put(event.request, response.clone()); return response; }))));
     return;
   }
@@ -26,6 +27,7 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
 
 
 
