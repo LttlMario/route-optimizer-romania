@@ -6,7 +6,7 @@ Aplicație locală pentru planificarea și parcurgerea rutelor de curierat în R
 
 Deschide folderul în VS Code și pornește un server static local, de exemplu extensia **Live Server**. Deschiderea directă cu `file://` poate bloca modulele JavaScript și unele funcții ale browserului.
 
-Pagina principală este `index.html`. După optimizare, `routes.html` este pagina de parcurs a curierului, iar `completed.html` conține istoricul local.
+Pagina principală este `index.html`. După optimizare, `routes.html` este pagina de parcurs a curierului, `saved.html` gestionează rutele denumite, `completed.html` conține istoricul local, iar `settings.html` centralizează preferințele, backup-ul, diagnosticul și ajutorul.
 
 ## Funcții principale
 
@@ -40,3 +40,4 @@ Pentru verificarea automată în Chrome headless, pe desktop și mobil:
 ```
 
 Resursele OCR românești sunt incluse în folderul `ocr/` și sunt adăugate în cache-ul PWA.
+
