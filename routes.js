@@ -25,7 +25,7 @@ window.addEventListener('touchstart', (event) => { if (!event.target.closest('.n
 function toggleMobileRouteView() { const workspace = document.querySelector('.route-workspace'); const showingMap = !workspace.classList.contains('show-route-map'); workspace.classList.toggle('show-route-map', showingMap); $('#toggle-route-view-mobile').textContent = showingMap ? 'Înapoi la rută' : 'Vezi harta'; if (showingMap) setTimeout(() => { map.invalidateSize(); drawMap(); }, 150); }
 $('#toggle-route-view-mobile').addEventListener('click', toggleMobileRouteView);
 $('#map-back-to-list').addEventListener('click', toggleMobileRouteView);
-$('#finish-job').addEventListener('click', () => { localStorage.removeItem(STORAGE_KEY); window.location.href = 'index.html'; }); $('#close-status-modal').addEventListener('click', () => { $('#delivery-status-modal').hidden = true; }); $('#save-delivery-status').addEventListener('click', saveStatusEditor);
+$('#finish-job').addEventListener('click', () => { if (!window.confirm('Închei jobul și pornesc o rută nouă? Istoricul livrărilor rămâne salvat.')) return; localStorage.removeItem(STORAGE_KEY); window.location.href = 'index.html'; }); $('#close-status-modal').addEventListener('click', () => { $('#delivery-status-modal').hidden = true; }); $('#save-delivery-status').addEventListener('click', saveStatusEditor);
 recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100);
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
