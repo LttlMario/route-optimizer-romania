@@ -85,3 +85,5 @@ if ((Get-Content -Raw app.js) -notmatch 'const previous = editIndex') { throw 'E
 if ((Get-Content -Raw app.js) -notmatch 'const serviceValue') { throw 'Editarea nu permite setarea staționării la zero.' }
 
 if ((Get-Content -Raw routes.js) -notmatch 'close-status-modal.*delivery-status-modal.*hidden = true') { throw 'Închiderea ferestrei de status nu ascunde modalul.' }
+
+if ((Get-Content -Raw routes.js) -notmatch 'arrivalAt = stop.arrivalAt.*save\(\)') { throw 'Ora de sosire nu se salvează la deschiderea livrării.' }
