@@ -64,12 +64,13 @@ function renderRouteDetails() {
 function drawMarkers() {
   state.markers.forEach((marker) => marker.remove()); state.markers = [];
   const pinIcon = (color, label) => L.divIcon({ className: 'pin-icon', html: `<svg viewBox="0 0 38 48" aria-hidden="true"><path d="M19 1C9.1 1 1.5 8.4 1.5 17.5 1.5 29.5 19 47 19 47s17.5-17.5 17.5-29.5C36.5 8.4 28.9 1 19 1Z" fill="${color}" stroke="#f3fffb" stroke-width="2"/><circle cx="19" cy="17" r="10" fill="#ffffff33"/><text x="19" y="21" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Arial, sans-serif">${label}</text></svg>`, iconSize: [38, 48], iconAnchor: [19, 47] });
+  const popupNode = (label, point) => { const box = document.createElement('div'); const title = document.createElement('strong'); title.textContent = label; const address = document.createElement('div'); address.textContent = point.display_name || point.input || ''; box.append(title, address); if (point.etaLabel) { const eta = document.createElement('small'); eta.textContent = `Sosire estimată: ${point.etaLabel}`; box.append(eta); } return box; };
   const startIcon = pinIcon('#e08a20', 'S');
   const stopIcon = (number) => pinIcon('#0f8f7b', number);
   const endIcon = pinIcon('#c84b63', 'F');
-  if (state.start) state.markers.push(L.marker([state.start.lat, state.start.lon], { icon: startIcon, zIndexOffset: 1000 }).addTo(map).bindPopup(`<b>Start</b><br>${state.start.display_name}`));
-  state.stops.forEach((stop, index) => state.markers.push(L.marker([stop.lat, stop.lon], { icon: stopIcon(index + 1) }).addTo(map).bindPopup(`<b>Oprirea ${index + 1}</b><br>${stop.display_name}`)));
-  if (state.end) state.markers.push(L.marker([state.end.lat, state.end.lon], { icon: endIcon, zIndexOffset: 900 }).addTo(map).bindPopup(`<b>Final</b><br>${state.end.display_name}`));
+  if (state.start) { const marker = L.marker([state.start.lat, state.start.lon], { icon: startIcon, zIndexOffset: 1000 }).addTo(map); marker.bindPopup(popupNode('Start', state.start)); state.markers.push(marker); }
+  state.stops.forEach((stop, index) => { const marker = L.marker([stop.lat, stop.lon], { icon: stopIcon(index + 1) }).addTo(map); marker.bindPopup(popupNode(`Oprirea ${index + 1}`, stop)); state.markers.push(marker); });
+  if (state.end) { const marker = L.marker([state.end.lat, state.end.lon], { icon: endIcon, zIndexOffset: 900 }).addTo(map); marker.bindPopup(popupNode('Final', state.end)); state.markers.push(marker); }
   const all = [state.start, ...state.stops, state.end].filter(Boolean); if (all.length > 1) map.fitBounds(L.latLngBounds(all.map((point) => [point.lat, point.lon])).pad(.15));
 }
 function geocodePayload(result, input) { return { lat: Number(result.lat), lon: Number(result.lon), display_name: result.display_name, input, address: result.address || {}, postalCode: result.address?.postcode || '', city: result.address?.city || result.address?.town || result.address?.village || result.address?.municipality || '', countryCode: result.address?.country_code || '' }; }
