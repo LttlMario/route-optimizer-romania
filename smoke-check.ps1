@@ -43,3 +43,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'visibilitychange.*recalculateRemaini
 if ((Get-Content -Raw app.js) -notmatch 'data-move-to' -or (Get-Content -Raw app.js) -notmatch 'data-swap' -or (Get-Content -Raw app.js) -notmatch 'position-input') { throw 'Editorul avansat al stopurilor este incomplet.' }
 if ((Get-Content -Raw routes.js) -notmatch 'pageshow.*recalculateRemainingEta') { throw 'ETA nu se reîncarcă la restaurarea paginii.' }
 if ((Get-Content -Raw routes.js) -match 'window\.alert\(message\)') { throw 'GPS folosește o alertă blocantă.' }
+if ((Get-Content -Raw routes.js) -notmatch 'function setStatus') { throw 'Pagina de livrare nu are status inline.' }

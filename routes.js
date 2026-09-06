@@ -10,6 +10,7 @@ state.start = cleanPoint(state.start); state.end = cleanPoint(state.end); state.
 const map = L.map('route-map').setView([45.9432, 24.9668], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 const $ = (selector) => document.querySelector(selector);
+function setStatus(message, error = false) { const node = #status; if (!node) return; node.textContent = message; node.style.background = error ? '#4a2525' : '#123b34'; node.style.color = error ? '#ffb4b4' : '#6ee7c8'; }
 function formatRouteDuration(seconds) { const minutes = Math.max(0, Math.round(Number(seconds || 0) / 60)); const hours = Math.floor(minutes / 60); const rest = minutes % 60; return hours ? `${hours} h${rest ? ` ${rest} min` : ''}` : `${rest} min`; }
 function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {} saveSnapshot(state); }
 function pinIcon(color, label) { return L.divIcon({ className: 'pin-icon', html: `<svg viewBox="0 0 38 48" aria-hidden="true"><path d="M19 1C9.1 1 1.5 8.4 1.5 17.5 1.5 29.5 19 47 19 47s17.5-17.5 17.5-29.5C36.5 8.4 28.9 1 19 1Z" fill="${color}" stroke="#f3fffb" stroke-width="2"/><circle cx="19" cy="17" r="10" fill="#ffffff33"/><text x="19" y="21" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Arial, sans-serif">${label}</text></svg>`, iconSize: [38, 48], iconAnchor: [19, 47] }); }
@@ -78,4 +79,5 @@ window.setInterval(refreshLiveDelay, 30000);
 
 
 window.addEventListener('pageshow', () => { recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
+
 
