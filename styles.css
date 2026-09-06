@@ -143,8 +143,9 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .window-controls label { display: inline-flex; align-items: center; gap: 4px; }
 .window-controls input { width: 88px; min-height: 27px; padding: 3px 5px; }
 .group-control { width: min(180px, 100%); margin-top: 7px; min-height: 29px; padding: 4px 7px; font-size: .72rem; }
-.saved-route-row { display: grid; grid-template-columns: 1.4fr auto 1.3fr auto; gap: 6px; margin-top: 8px; }
+.saved-route-row { display: grid; grid-template-columns: 1.4fr auto 1.3fr auto auto; gap: 6px; margin-top: 8px; }
 .saved-route-row input, .saved-route-row select { min-width: 0; }
+.saved-route-row .danger-button { border: 1px solid #7d3a4a; border-radius: 8px; background: #4a252f; color: #ffb4b4; font: inherit; font-weight: 700; cursor: pointer; padding: 8px 10px; }
 .network-status { display: inline-flex; align-items: center; margin-left: 8px; padding: 6px 9px; border-radius: 999px; background: #123b34; color: #6ee7c8; font-size: .72rem; font-weight: 800; }
 .network-status.offline { background: #4a252f; color: #ffb4b4; }
 .optimization-mode { display: flex; align-items: center; gap: 8px; margin: 10px 0; color: #b6cbc5; }
