@@ -1,4 +1,4 @@
-const CACHE_NAME = 'route-optimizer-pwa-v182';
+const CACHE_NAME = 'route-optimizer-pwa-v183';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
 async function cacheRuntimeResponse(cache, request, response) { await cache.put(request, response); const keys = await cache.keys(); if (keys.length > 300) await Promise.all(keys.slice(0, keys.length - 300).map((key) => cache.delete(key))); }
 const APP_SHELL = [

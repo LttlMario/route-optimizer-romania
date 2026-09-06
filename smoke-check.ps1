@@ -79,3 +79,5 @@ if ((Get-Content -Raw app.js) -notmatch 'function exactOrder') { throw 'Optimiza
 
 if ((Get-Content -Raw app.js) -notmatch 'function getTrafficFactor') { throw 'Factorul automat de trafic lipsește.' }
 if ((Get-Content -Raw index.html) -notmatch 'value=.*auto') { throw 'Modul automat de trafic lipsește.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'const previous = editIndex') { throw 'Editarea stopului nu păstrează setările existente.' }
