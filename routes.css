@@ -54,6 +54,8 @@
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
 .navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
 .navigation-preference select { min-height:38px; }
+.network-status { display: inline-flex; align-items: center; margin-left: 8px; padding: 6px 9px; border-radius: 999px; background: #123b34; color: #6ee7c8; font-size: .72rem; font-weight: 800; }
+.network-status.offline { background: #4a252f; color: #ffb4b4; }
 .break-button { width: 100%; margin-top: 10px; padding: 9px; border: 1px solid #52726a; border-radius: 9px; background: #1d302c; color: #8ce5d0; font: inherit; font-weight: 700; cursor: pointer; }
 .print-route { width: 100%; margin-top: 8px; padding: 9px; border: 1px solid #52726a; border-radius: 9px; background: transparent; color: #b6cbc5; font: inherit; font-weight: 700; cursor: pointer; }
 @media print { .site-sidebar, .route-map-panel, .route-header .back-link, .panel-actions, .print-route, .break-button, .navigation-preference, .finish-job, .next-stop-card, .progress-card, .delivery-hint { display: none !important; } .route-shell { width: 100%; max-width: none; margin: 0; padding: 0; } .delivery-panel { overflow: visible; border: 0; box-shadow: none; background: #fff; color: #111; } .delivery-item, .delivery-item span, .delivery-item strong { color: #111 !important; border-color: #ccc; } .site-footer { display: none; } }
