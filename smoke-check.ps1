@@ -53,3 +53,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'pagehide.*stopLocationWatch') { thro
 if ((Get-Content -Raw routes.js) -notmatch 'courierMarker\.remove\(\)') { throw 'Markerul GPS nu este curățat.' }
 if ((Get-Content -Raw routes.js) -notmatch 'error\?\.code === 1' -or (Get-Content -Raw routes.js) -notmatch 'error\?\.code === 3') { throw 'Erorile GPS nu au mesaje diferențiate.' }
 if ((Get-Content -Raw routes.html) -notmatch 'id="status"') { throw 'Pagina routes nu are status inline.' }
+if ((Get-Content -Raw routes.js) -notmatch 'hasOwnProperty\.call\(STATUS_LABELS') { throw 'Statusurile de livrare nu sunt validate.' }
