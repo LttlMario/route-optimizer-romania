@@ -1,9 +1,12 @@
 import { saveSnapshot, saveCompletedStop, getActiveSnapshot } from './storage.js';
 const STORAGE_KEY = 'route-optimizer-romania-v1';
 const COMPLETED_KEY = 'route-optimizer-completed-v1';
+function cleanPoint(point) { if (!point || !Number.isFinite(Number(point.lat)) || !Number.isFinite(Number(point.lon))) return null; return { ...point, lat: Number(point.lat), lon: Number(point.lon), display_name: String(point.display_name || point.input || 'Adresă') }; }
+function cleanStops(stops) { return Array.isArray(stops) ? stops.map(cleanPoint).filter(Boolean) : []; }
 let saved = null;
 try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch { localStorage.removeItem(STORAGE_KEY); }
 const state = saved || { start: null, end: null, stops: [], returnToStart: false };
+state.start = cleanPoint(state.start); state.end = cleanPoint(state.end); state.stops = cleanStops(state.stops);
 const map = L.map('route-map').setView([45.9432, 24.9668], 7);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 const $ = (selector) => document.querySelector(selector);
@@ -27,7 +30,7 @@ function toggleMobileRouteView() { const workspace = document.querySelector('.ro
 $('#toggle-route-view-mobile').addEventListener('click', toggleMobileRouteView);
 $('#map-back-to-list').addEventListener('click', toggleMobileRouteView);
 $('#finish-job').addEventListener('click', async () => { if (!window.confirm('Închei jobul și pornesc o rută nouă? Istoricul livrărilor rămâne salvat.')) return; localStorage.removeItem(STORAGE_KEY); await saveSnapshot({ start: null, end: null, stops: [], routeGeometry: null, routeDistance: 0, routeDuration: 0 }); window.location.href = 'index.html'; }); $('#close-status-modal').addEventListener('click', () => { $('#delivery-status-modal').hidden = true; }); $('#save-delivery-status').addEventListener('click', saveStatusEditor);
-async function initializeRoutePage() { if (!state.start && !state.end && !state.stops.length) { const snapshot = await getActiveSnapshot(); const data = snapshot?.data; if (data && (data.start || data.end || data.stops?.length)) { Object.assign(state, data); setStatus('Ruta activă a fost restaurată automat'); } } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100); } initializeRoutePage();
+async function initializeRoutePage() { if (!state.start && !state.end && !state.stops.length) { const snapshot = await getActiveSnapshot(); const data = snapshot?.data; if (data && (data.start || data.end || data.stops?.length)) { Object.assign(state, data); state.start = cleanPoint(state.start); state.end = cleanPoint(state.end); state.stops = cleanStops(state.stops); setStatus('Ruta activă a fost restaurată automat'); } } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100); } initializeRoutePage();
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) $('#navigation-options').hidden = true; });
