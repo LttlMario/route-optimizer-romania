@@ -1,5 +1,6 @@
-const CACHE_NAME = 'route-optimizer-pwa-v97';
+const CACHE_NAME = 'route-optimizer-pwa-v98';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
+async function cacheRuntimeResponse(cache, request, response) { await cache.put(request, response); const keys = await cache.keys(); if (keys.length > 300) await Promise.all(keys.slice(0, keys.length - 300).map((key) => cache.delete(key))); }
 const APP_SHELL = [
   './', './index.html', './routes.html', './completed.html',
   './styles.css', './routes.css', './app.js', './routes.js', './completed.js',
@@ -18,7 +19,7 @@ self.addEventListener('fetch', (event) => {
   const mapTile = url.hostname.endsWith('tile.openstreetmap.org');
   if (url.origin !== self.location.origin && !externalAsset && !mapTile) return;
   if (externalAsset || mapTile) {
-    event.respondWith(caches.open(RUNTIME_CACHE).then((cache) => cache.match(event.request).then((cached) => cached || fetch(event.request).then((response) => { cache.put(event.request, response.clone()); return response; }))));
+    event.respondWith(caches.open(RUNTIME_CACHE).then((cache) => cache.match(event.request).then((cached) => cached || fetch(event.request).then((response) => { cacheRuntimeResponse(cache, event.request, response.clone()); return response; }))));
     return;
   }
   event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
@@ -27,6 +28,7 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
 
 
 
