@@ -87,3 +87,4 @@ window.addEventListener('pagehide', () => stopLocationWatch());
 
 
 
+window.setInterval(() => save(), 30000);
