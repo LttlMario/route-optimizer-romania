@@ -66,6 +66,7 @@ if ((Get-Content -Raw routes.js) -match 'const node = #|const requestedStatus = 
 if ((Get-Content -Raw routes.js) -notmatch 'wakeLock') { throw 'Pagina de livrare nu are menținerea ecranului activ.' }
 if ((Get-Content -Raw routes.js) -notmatch 'historyKey') { throw 'Istoricul nu identifică unic stopurile dintr-o rută.' }
 if ((Get-Content -Raw storage.js) -notmatch 'existing\.filter\(\(item\) => item\.historyKey') { throw 'IndexedDB nu actualizează intrările duplicate din istoric.' }
+if ((Get-Content -Raw routes.js) -notmatch 'function refreshLiveDelay\(\) \{ recalculateRemainingEta\(\)') { throw 'ETA live nu se recalculează periodic.' }
 if ((Get-Content -Raw routes.html) -notmatch 'next-stop-address[^>]*aria-live="polite"') { throw 'Următorul stop nu are anunț accesibil.' }
 if ((Get-Content -Raw routes.js) -notmatch 'setInterval\(\(\) => save\(\), 30000\)') { throw 'Ruta nu are autosalvare periodică.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB nu închide conexiunile după scriere.' }
