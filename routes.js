@@ -72,7 +72,7 @@ function recalculateRemainingEta() { const updatedStops = state.stops.filter((st
 function decorateRouteDelay() { const delay = Number(state.routeDelayMinutes || 0); document.querySelectorAll('#delivery-list .delivery-item > div > span').forEach((span) => { span.querySelector('.delay-label')?.remove(); if (delay > 0) { const label = document.createElement('small'); label.className = 'delay-label'; label.textContent = `Întârziat cu ${delay} min`; span.append(label); } }); const meta = document.querySelector('#route-meta'); if (meta && delay > 0 && !meta.textContent.includes('întârziere')) meta.textContent += ` · întârziere ${delay} min`; }
 const delayObserver = new MutationObserver(() => decorateRouteDelay()); delayObserver.observe(document.querySelector('#delivery-list'), { childList: true, subtree: true });
 
-$('#$('#complete-next')?.addEventListener('click', () => { const stop = nextStop(); if (!stop || stop.isFinish) return; openStatusEditor(state.stops.indexOf(stop)); });
+$('#complete-next')?.addEventListener('click', () => { const stop = nextStop(); if (!stop || stop.isFinish) return; openStatusEditor(state.stops.indexOf(stop)); });
 
 
 window.addEventListener('pagehide', () => { if (locationWatchId !== null && navigator.geolocation) navigator.geolocation.clearWatch(locationWatchId); });
