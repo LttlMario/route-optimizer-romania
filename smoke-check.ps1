@@ -30,6 +30,7 @@ if ((Get-Content -Raw app.js) -notmatch 'fetchWithTimeout') { throw 'Rutarea OSR
 if ((Get-Content -Raw app.js) -notmatch 'fetchRoutingWithRetry') { throw 'Rutarea OSRM nu are retry.' }
 if ((Get-Content -Raw app.js) -notmatch 'approximateDurationMatrix' -or (Get-Content -Raw app.js) -notmatch 'approximateRoute') { throw 'Fallback-ul local pentru rutare lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'candidateScore') { throw 'Optimizerul nu folosește scorarea ferestrelor orare.' }
+if ((Get-Content -Raw app.js) -notmatch 'optimizationMatrix' -or (Get-Content -Raw app.js) -notmatch 'annotations=duration,distance') { throw 'Modul de optimizare pe distanță lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'cleanPoint' -or (Get-Content -Raw app.js) -notmatch 'cleanStops') { throw 'Sanitizarea coordonatelor restaurate lipsește.' }
 if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
 foreach ($provider in @('google', 'apple', 'waze')) { if ((Get-Content -Raw routes.js) -notmatch $provider) { throw "Navigarea $provider lipsește." } }
