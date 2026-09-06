@@ -83,3 +83,4 @@ window.addEventListener('pageshow', () => { recalculateRemainingEta(); save(); r
 
 
 
+window.addEventListener('pagehide', () => stopLocationWatch());

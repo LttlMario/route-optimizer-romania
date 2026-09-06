@@ -49,3 +49,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*urmărirea GPS') { throw
 if ((Get-Content -Raw app.js) -notmatch 'response\.status === 429') { throw 'Geocoderul nu tratează limitarea Nominatim.' }
 if ((Get-Content -Raw app.js) -notmatch 'navigator\.onLine === false') { throw 'Geocoderul nu are mesaj offline.' }
 if ((Get-Content -Raw app.js) -notmatch 'OCR-ul nu este încă disponibil offline') { throw 'Scanarea OCR offline nu are mesaj clar.' }
+if ((Get-Content -Raw routes.js) -notmatch 'pagehide.*stopLocationWatch') { throw 'GPS watch nu se oprește la pagehide.' }
