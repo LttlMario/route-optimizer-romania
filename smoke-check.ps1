@@ -14,10 +14,13 @@ if ($sw -notmatch "CACHE_NAME") { throw 'Service worker fără cache configurat.
 $htmlChecks = @{
   'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next')
-  'completed.html' = @('history-list', 'history-filter', 'clear-history')
+  'completed.html' = @('history-list', 'history-filter', 'export-history', 'clear-history')
 }
 foreach ($entry in $htmlChecks.GetEnumerator()) {
   $html = Get-Content -Raw $entry.Key
   foreach ($id in $entry.Value) { if ($html -notmatch ('id="' + $id + '"')) { throw "Lipsește controlul #$id din $($entry.Key)" } }
 }
+if ((Get-Content -Raw storage.js) -notmatch 'getActiveSnapshot') { throw 'IndexedDB fără recuperarea checkpoint-ului activ.' }
+if ((Get-Content -Raw app.js) -notmatch 'invalidateOptimization') { throw 'Optimizerul nu invalidează ruta după modificări.' }
+if ((Get-Content -Raw completed.js) -notmatch 'export-history') { throw 'Istoricul nu are exportul CSV.' }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
