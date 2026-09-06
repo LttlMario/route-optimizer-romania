@@ -72,3 +72,5 @@ if ((Get-Content -Raw routes.html) -notmatch 'next-stop-address[^>]*aria-live="p
 if ((Get-Content -Raw routes.js) -notmatch 'setInterval\(\(\) => save\(\), 30000\)') { throw 'Ruta nu are autosalvare periodică.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB nu închide conexiunile după scriere.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\); resolve') { throw 'IndexedDB nu închide conexiunile după citire.' }
+
+if ((Get-Content -Raw routes.js) -notmatch 'completeButton\.hidden = !next') { throw 'Butonul de livrare nu se ascunde pentru Finish.' }
