@@ -40,3 +40,4 @@ if ((Get-Content -Raw routes.js) -notmatch '#share-route') { throw 'Butonul de d
 if ((Get-Content -Raw routes.js) -notmatch 'popupContent') { throw 'Harta nu are popup-uri sigure pentru pinuri.' }
 if ((Get-Content -Raw routes.js) -notmatch 'navigator\.share' -or (Get-Content -Raw routes.js) -notmatch 'clipboard\.writeText') { throw 'Distribuirea nu are Web Share și fallback clipboard.' }
 if ((Get-Content -Raw routes.js) -notmatch 'visibilitychange.*recalculateRemainingEta') { throw 'ETA nu se recalculează la revenirea în prim-plan.' }
+if ((Get-Content -Raw app.js) -notmatch 'data-move-to' -or (Get-Content -Raw app.js) -notmatch 'data-swap' -or (Get-Content -Raw app.js) -notmatch 'position-input') { throw 'Editorul avansat al stopurilor este incomplet.' }
