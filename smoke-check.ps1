@@ -45,3 +45,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'pageshow.*recalculateRemainingEta') 
 if ((Get-Content -Raw routes.js) -match 'window\.alert\(message\)') { throw 'GPS folosește o alertă blocantă.' }
 if ((Get-Content -Raw routes.js) -notmatch 'function setStatus') { throw 'Pagina de livrare nu are status inline.' }
 if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*Marchează stopul' -or (Get-Content -Raw routes.js) -notmatch 'aria-label.*Navighează către Finish') { throw 'Butoanele de livrare nu au etichete accesibile.' }
+if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*urmărirea GPS') { throw 'Butonul GPS nu are etichetă accesibilă.' }

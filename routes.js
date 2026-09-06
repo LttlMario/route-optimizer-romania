@@ -47,8 +47,8 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) { $('
 
 const courierLocationIcon = L.divIcon({ className: 'courier-location-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
 let locationWatchId = null; let firstCourierFix = true; function updateCourierPosition({ coords }) { const point = [coords.latitude, coords.longitude]; if (!courierMarker) courierMarker = L.marker(point, { icon: courierLocationIcon, zIndexOffset: 2000 }).addTo(map); else courierMarker.setLatLng(point); const accuracy = Number(coords.accuracy || 0); if (accuracy > 0) { if (!courierAccuracyCircle) courierAccuracyCircle = L.circle(point, { radius: accuracy, color: '#36b89b', fillColor: '#36b89b', fillOpacity: .12, weight: 1 }).addTo(map); else courierAccuracyCircle.setLatLng(point).setRadius(accuracy); } if (firstCourierFix) { map.setView(point, Math.max(map.getZoom(), 15)); firstCourierFix = false; } }
-function stopLocationWatch(message = '') { const button = $('#locate-courier'); if (locationWatchId !== null) navigator.geolocation.clearWatch(locationWatchId); locationWatchId = null; firstCourierFix = true; if (courierAccuracyCircle) { courierAccuracyCircle.remove(); courierAccuracyCircle = null; } if (button) { button.textContent = '◎ Locația mea'; button.title = message || 'Pornește urmărirea GPS'; } if (message) setStatus(message, true); }
-function locateCourier() { const button = $('#locate-courier'); if (!navigator.geolocation) { stopLocationWatch('Browserul nu oferă localizare GPS.'); return; } if (locationWatchId !== null) { stopLocationWatch(); return; } button && (button.textContent = '■ Oprește urmărirea'); button && (button.title = 'Oprește urmărirea GPS'); const error = () => stopLocationWatch('Nu am putut obține locația. Verifică permisiunea GPS.'); navigator.geolocation.getCurrentPosition(updateCourierPosition, error, { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }); locationWatchId = navigator.geolocation.watchPosition(updateCourierPosition, error, { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 }); }
+function stopLocationWatch(message = '') { const button = $('#locate-courier'); if (locationWatchId !== null) navigator.geolocation.clearWatch(locationWatchId); locationWatchId = null; firstCourierFix = true; if (courierAccuracyCircle) { courierAccuracyCircle.remove(); courierAccuracyCircle = null; } if (button) { button.textContent = '◎ Locația mea'; button.title = message || 'Pornește urmărirea GPS'; button.setAttribute('aria-label', message || 'Pornește urmărirea GPS'); } if (message) setStatus(message, true); }
+function locateCourier() { const button = $('#locate-courier'); if (!navigator.geolocation) { stopLocationWatch('Browserul nu oferă localizare GPS.'); return; } if (locationWatchId !== null) { stopLocationWatch(); return; } button && (button.textContent = '■ Oprește urmărirea'); button && (button.title = 'Oprește urmărirea GPS'); button && button.setAttribute('aria-label', 'Oprește urmărirea GPS'); const error = () => stopLocationWatch('Nu am putut obține locația. Verifică permisiunea GPS.'); navigator.geolocation.getCurrentPosition(updateCourierPosition, error, { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }); locationWatchId = navigator.geolocation.watchPosition(updateCourierPosition, error, { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 }); }
 $('#locate-courier')?.addEventListener('click', locateCourier);
 
 let deliveryTimerInterval = null;
@@ -79,6 +79,7 @@ window.setInterval(refreshLiveDelay, 30000);
 
 
 window.addEventListener('pageshow', () => { recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
+
 
 
 
