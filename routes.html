@@ -25,7 +25,7 @@
         <p class="delivery-hint">Apasă „Livrat” după ce predai coletul. Oprirea se colorează verde și rămâne salvată pe acest dispozitiv.</p>
         <ol id="delivery-list" class="delivery-list"></ol>
       </section>
-      <section class="route-map-panel"><button id="map-back-to-list" class="map-back-to-list" type="button">← Înapoi la rută</button><button id="locate-courier" class="locate-courier" type="button">◎ Locația mea</button><div class="map-legend"><span><i class="legend-dot active"></i>Activ</span><span><i class="legend-dot delivered"></i>Livrat</span><span><i class="legend-dot absent"></i>Absent</span><span><i class="legend-dot rescheduled"></i>Reprogramat</span></div><div id="route-map"></div></section>
+      <section class="route-map-panel"><button id="map-back-to-list" class="map-back-to-list" type="button">← Înapoi la rută</button><button id="locate-courier" class="locate-courier" type="button">◎ Locația mea</button><div class="map-legend"><span><i class="legend-dot active"></i>Activ</span><span><i class="legend-dot delivered"></i>Livrat</span><span><i class="legend-dot absent"></i>Absent</span><span><i class="legend-dot rescheduled"></i>Reprogramat</span><span><i class="legend-dot wrong-address"></i>Adresă greșită</span><span><i class="legend-dot cancelled"></i>Anulat</span></div><div id="route-map"></div></section>
     </section>
   </main>
 <section id="delivery-status-modal" class="review-modal" hidden><div class="review-card status-card"><div class="review-header"><div><p class="eyebrow">ACTUALIZARE OPRIRE</p><h2>Ce s-a întâmplat?</h2><p>Salvează statusul și o notiță pentru acest stop.</p><strong id="delivery-timer" class="delivery-timer">Timp la oprire: 00:00</strong></div><button id="close-status-modal" class="ghost" type="button">Închide</button></div><label for="delivery-status">Status</label><select id="delivery-status"><option value="delivered">Livrat</option><option value="absent">Client absent</option><option value="wrong-address">Adresă greșită</option><option value="rescheduled">Reprogramat</option><option value="cancelled">Anulat</option></select><label for="delivery-note">Notiță</label><textarea id="delivery-note" rows="4" placeholder="Ex: clientul revine la ora 16:00"></textarea><button id="save-delivery-status" class="primary" type="button">Salvează statusul</button></div></section>  <footer class="site-footer">Route Optimizer România · OpenStreetMap contributors</footer>
@@ -34,6 +34,7 @@
   <script src="pwa.js"></script>
 </body>
 </html>
+
 
 
 
