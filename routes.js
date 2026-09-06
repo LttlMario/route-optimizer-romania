@@ -41,7 +41,8 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) $('#n
 
 
 const courierLocationIcon = L.divIcon({ className: 'courier-location-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
-function locateCourier() { if (!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(({ coords }) => { const point = [coords.latitude, coords.longitude]; if (!courierMarker) courierMarker = L.marker(point, { icon: courierLocationIcon, zIndexOffset: 2000 }).addTo(map); else courierMarker.setLatLng(point); map.setView(point, Math.max(map.getZoom(), 15)); }, () => {}, { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }); }
+let locationWatchId = null; let firstCourierFix = true; function updateCourierPosition({ coords }) { const point = [coords.latitude, coords.longitude]; if (!courierMarker) courierMarker = L.marker(point, { icon: courierLocationIcon, zIndexOffset: 2000 }).addTo(map); else courierMarker.setLatLng(point); if (firstCourierFix) { map.setView(point, Math.max(map.getZoom(), 15)); firstCourierFix = false; } }
+function locateCourier() { const button = $('#locate-courier'); if (!navigator.geolocation) { if (button) button.textContent = 'GPS indisponibil'; return; } if (locationWatchId !== null) { navigator.geolocation.clearWatch(locationWatchId); locationWatchId = null; firstCourierFix = true; if (button) button.textContent = '◎ Locația mea'; return; } button && (button.textContent = '■ Oprește urmărirea'); navigator.geolocation.getCurrentPosition(updateCourierPosition, () => {}, { enableHighAccuracy: true, timeout: 10000, maximumAge: 15000 }); locationWatchId = navigator.geolocation.watchPosition(updateCourierPosition, () => {}, { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 }); }
 $('#locate-courier')?.addEventListener('click', locateCourier);
 
 let deliveryTimerInterval = null;
