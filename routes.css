@@ -78,3 +78,6 @@ html, body { overflow-x: hidden; }
   .route-shell, .history-shell { max-width: calc(100vw - 218px); overflow-x: hidden; }
   .route-workspace, .route-header, .history-shell .route-header, .history-card { max-width: 100%; }
 }
+
+.stop-action-buttons { display: inline-flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.navigate-stop { padding: 7px 9px; border: 1px solid #52726a; border-radius: 7px; background: #21433c; color: #8ce5d0; font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
