@@ -142,6 +142,7 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .window-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; color: #8aa19b; font-size: .72rem; }
 .window-controls label { display: inline-flex; align-items: center; gap: 4px; }
 .window-controls input { width: 88px; min-height: 27px; padding: 3px 5px; }
+.group-control { width: min(180px, 100%); margin-top: 7px; min-height: 29px; padding: 4px 7px; font-size: .72rem; }
 .saved-route-row { display: grid; grid-template-columns: 1.4fr auto 1.3fr auto; gap: 6px; margin-top: 8px; }
 .saved-route-row input, .saved-route-row select { min-width: 0; }
 .network-status { display: inline-flex; align-items: center; margin-left: 8px; padding: 6px 9px; border-radius: 999px; background: #123b34; color: #6ee7c8; font-size: .72rem; font-weight: 800; }
