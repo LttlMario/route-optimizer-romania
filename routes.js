@@ -35,6 +35,7 @@ async function initializeRoutePage() { if (!state.start && !state.end && !state.
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) { $('#navigation-options').hidden = true; return; } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
+document.addEventListener('visibilitychange', async () => { if (!document.hidden && wakeLockRequested && !screenWakeLock) { try { screenWakeLock = await navigator.wakeLock?.request('screen'); if (screenWakeLock) { screenWakeLock.addEventListener('release', () => { screenWakeLock = null; }); } } catch {} } });
 
 
 
@@ -55,8 +56,9 @@ let deliveryTimerInterval = null;
 function openStatusEditor(index) { const stop = state.stops[index]; if (!stop) return; stop.arrivalAt = stop.arrivalAt || new Date().toISOString(); $('#delivery-status').value = stop.status || 'delivered'; $('#delivery-note').value = stop.note || ''; $('#delivery-status-modal').dataset.index = String(index); $('#delivery-status-modal').hidden = false; const timer = $('#delivery-timer'); const updateTimer = () => { const seconds = Math.max(0, Math.floor((Date.now() - new Date(stop.arrivalAt).getTime()) / 1000)); const minutes = Math.floor(seconds / 60); timer.textContent = `Timp la oprire: ${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`; }; clearInterval(deliveryTimerInterval); updateTimer(); deliveryTimerInterval = setInterval(() => { if ($('#delivery-status-modal').hidden) { clearInterval(deliveryTimerInterval); return; } updateTimer(); }, 1000); $('#delivery-status').focus(); }
 $('#close-status-modal').addEventListener('click', () => clearInterval(deliveryTimerInterval));
 
+let screenWakeLock = null; let wakeLockRequested = false; async function toggleScreenWakeLock() { const button = $('#wake-lock'); if (screenWakeLock) { await screenWakeLock.release().catch(() => {}); screenWakeLock = null; wakeLockRequested = false; if (button) { button.textContent = '☀ Ecran activ'; button.classList.remove('active'); } setStatus('Blocarea ecranului a fost permisă'); return; } if (!('wakeLock' in navigator)) { setStatus('Browserul nu poate menține ecranul activ.', true); return; } try { screenWakeLock = await navigator.wakeLock.request('screen'); wakeLockRequested = true; screenWakeLock.addEventListener('release', () => { screenWakeLock = null; const current = $('#wake-lock'); current?.classList.remove('active'); if (current) current.textContent = '☀ Ecran activ'; }); if (button) { button.textContent = '☀ Ecranul rămâne activ'; button.classList.add('active'); } setStatus('Ecranul va rămâne activ cât timp parcurgi ruta'); } catch { setStatus('Nu am putut menține ecranul activ. Verifică permisiunile browserului.', true); } }
 function addRouteBreak(minutes = 5) { const delta = minutes * 60000; state.stops.filter((stop) => !isProcessed(stop) && stop.etaAt).forEach((stop) => { stop.etaAt += delta; stop.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(stop.etaAt)); }); if (state.end?.etaAt) { state.end.etaAt += delta; state.end.etaLabel = new Intl.DateTimeFormat('ro-RO', { hour: '2-digit', minute: '2-digit' }).format(new Date(state.end.etaAt)); } save(); renderList(); updateProgress(); setStatus(`Pauză de ${minutes} minute adăugată`); }
-$('#add-break')?.addEventListener('click', () => addRouteBreak(5));
+$('#add-break')?.addEventListener('click', () => addRouteBreak(5)); $('#wake-lock')?.addEventListener('click', toggleScreenWakeLock);
 $('#print-route')?.addEventListener('click', () => window.print());
 document.querySelector('#share-route')?.addEventListener('click', async () => { const stops = state.stops.map((stop, index) => `${index + 1}. ${stop.display_name || stop.input || ''}${stop.etaLabel ? ` · ETA ${stop.etaLabel}` : ''}${stop.statusLabel ? ` · ${stop.statusLabel}` : ''}`); const finish = state.end ? `\nFinish: ${state.end.display_name || state.end.input || ''}${state.end.etaLabel ? ` · ETA ${state.end.etaLabel}` : ''}` : ''; const text = `Ruta curierului\n${stops.join('\n')}${finish}`; if (navigator.share) { try { await navigator.share({ title: 'Ruta curierului', text }); return; } catch (error) { if (error.name === 'AbortError') return; } } try { await navigator.clipboard.writeText(text); setStatus('Ruta a fost copiată pentru distribuire'); } catch { setStatus('Nu am putut distribui ruta.', true); } });
 
@@ -84,6 +86,7 @@ window.addEventListener('pageshow', () => { recalculateRemainingEta(); save(); r
 
 
 window.addEventListener('pagehide', () => stopLocationWatch());
+window.addEventListener('pagehide', () => { screenWakeLock?.release?.().catch(() => {}); screenWakeLock = null; });
 
 
 

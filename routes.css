@@ -90,3 +90,5 @@ html, body { overflow-x: hidden; }
 
 .history-export{padding:10px 13px;border:1px solid #52726a;border-radius:9px;background:#21433c;color:#8ce5d0;font:inherit;font-weight:700;cursor:pointer}.history-export:hover{border-color:#36b89b;color:#d8f5ed}
 .share-route{width:100%;margin-top:8px;padding:9px;border:1px solid #52726a;border-radius:9px;background:transparent;color:#b6cbc5;font:inherit;font-weight:700;cursor:pointer}.share-route:hover{border-color:#36b89b;color:#8ce5d0}
+
+.wake-lock-button{width:100%;margin-top:8px;padding:9px;border:1px solid #52726a;border-radius:9px;background:transparent;color:#b6cbc5;font:inherit;font-weight:700;cursor:pointer}.wake-lock-button:hover,.wake-lock-button.active{border-color:#36b89b;background:#21433c;color:#8ce5d0}
