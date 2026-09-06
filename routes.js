@@ -26,7 +26,7 @@ function toggleMobileRouteView() { const workspace = document.querySelector('.ro
 $('#toggle-route-view-mobile').addEventListener('click', toggleMobileRouteView);
 $('#map-back-to-list').addEventListener('click', toggleMobileRouteView);
 $('#finish-job').addEventListener('click', () => { localStorage.removeItem(STORAGE_KEY); window.location.href = 'index.html'; }); $('#close-status-modal').addEventListener('click', () => { $('#delivery-status-modal').hidden = true; }); $('#save-delivery-status').addEventListener('click', saveStatusEditor);
-renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100);
+recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100);
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) $('#navigation-options').hidden = true; });
