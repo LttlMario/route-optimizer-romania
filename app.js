@@ -45,6 +45,7 @@ function refreshList() {
   list.querySelectorAll('.remove-stop').forEach((button) => button.addEventListener('click', () => { if (!window.confirm('Ștergi această oprire din rută?')) return; pushUndo(); state.stops.splice(Number(button.dataset.index), 1); invalidateOptimization(); saveState(); drawMarkers(); refreshList(); setStatus('Oprire ștearsă'); }));
   list.querySelectorAll('.edit-stop').forEach((button) => button.addEventListener('click', () => { const index = Number(button.dataset.index); const stop = state.stops[index]; if (!stop) return; if (stop.locked) { setStatus('Stopul este blocat. Deblochează-l înainte de editare.', true); return; } editingStopIndex = index; $('#stop-address').value = stop.input || stop.display_name; $('#stop-address').focus(); setStatus('Editează adresa și apasă Adaugă'); }));
   renderRouteDetails();
+  renderFeasibilityReport();
   enhanceStopList();
 }
 
@@ -83,6 +84,32 @@ function renderReview() {
   addRow('Finish', state.end || ($('#return-to-start').checked ? state.start : null));
 }
 function renderReviewMap() { if (!reviewMap) { reviewMap = L.map('review-map').setView([45.9432, 24.9668], 7); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(reviewMap); } reviewMarkers.forEach((marker) => marker.remove()); reviewMarkers = []; const pin = (color, label) => L.divIcon({ className: 'pin-icon', html: `<svg viewBox="0 0 38 48" aria-hidden="true"><path d="M19 1C9.1 1 1.5 8.4 1.5 17.5 1.5 29.5 19 47 19 47s17.5-17.5 17.5-29.5C36.5 8.4 28.9 1 19 1Z" fill="${color}" stroke="#f3fffb" stroke-width="2"/><text x="19" y="21" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Arial, sans-serif">${label}</text></svg>`, iconSize: [38, 48], iconAnchor: [19, 47] }); if (state.start) reviewMarkers.push(L.marker([state.start.lat, state.start.lon], { icon: pin('#e08a20', 'S') }).addTo(reviewMap)); state.stops.forEach((stop, index) => reviewMarkers.push(L.marker([stop.lat, stop.lon], { icon: pin('#0f8f7b', index + 1) }).addTo(reviewMap))); const end = state.end || ($('#return-to-start').checked ? state.start : null); if (end) reviewMarkers.push(L.marker([end.lat, end.lon], { icon: pin('#c84b63', 'F') }).addTo(reviewMap)); const points = [state.start, ...state.stops, end].filter(Boolean); if (points.length > 1) reviewMap.fitBounds(L.latLngBounds(points.map((point) => [point.lat, point.lon])).pad(.15)); setTimeout(() => reviewMap.invalidateSize(), 50); }
+function renderFeasibilityReport() {
+  const panel = $('#feasibility-report');
+  if (!panel) return;
+  const hasRoute = Boolean(state.routeDistance || state.stops.some((stop) => stop.etaAt) || state.end?.etaAt);
+  if (!hasRoute) { panel.hidden = true; return; }
+  const capacity = Math.max(1, Number($('#vehicle-capacity')?.value || 50));
+  const packages = state.stops.reduce((sum, stop) => sum + Math.max(1, Number(stop.packageCount || 1)), 0);
+  const lateStops = state.stops.filter((stop) => Number(stop.lateMinutes || 0) > 0);
+  const waitingMinutes = state.stops.reduce((sum, stop) => sum + Number(stop.windowWaitMinutes || 0), 0);
+  const issues = [];
+  if (packages > capacity) issues.push(`Capacitate depășită: ${packages} colete din ${capacity}.`);
+  lateStops.forEach((stop) => issues.push(`${stop.input || stop.display_name || 'Oprire'}: întârziere de ${stop.lateMinutes} min față de fereastra orară.`));
+  if (waitingMinutes) issues.push(`Așteptare planificată la ferestrele de livrare: ${waitingMinutes} min.`);
+  const feasible = packages <= capacity && lateStops.length === 0;
+  const badge = $('#feasibility-badge');
+  badge.textContent = feasible ? 'Realizabilă' : 'Necesită atenție';
+  badge.className = 'feasibility-badge ' + (feasible ? 'feasibility-ok' : 'feasibility-warning');
+  const finishText = state.end?.etaLabel ? ` Finish estimat: ${state.end.etaLabel}.` : '';
+  $('#feasibility-summary').textContent = `${state.stops.length} opriri · ${packages} colete · ${lateStops.length} ferestre depășite.${finishText}`;
+  const list = $('#feasibility-issues');
+  list.replaceChildren();
+  if (!issues.length) {
+    const item = document.createElement('li'); item.textContent = 'Nu există conflicte detectate pentru capacitate sau ferestre orare.'; list.append(item);
+  } else issues.slice(0, 8).forEach((message) => { const item = document.createElement('li'); item.textContent = message; list.append(item); });
+  panel.hidden = false;
+}
 function renderRouteDetails() {
   const details = $('#route-details'); if (!details) return; details.replaceChildren();
   const addRow = (label, point, className = '', stopIndex = null) => {

@@ -155,3 +155,11 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .blocked-roads-field { display:flex; flex-direction:column; gap:6px; margin:10px 0 4px; color:#b6cbc5; font-size:.78rem; font-weight:600; } .blocked-roads-field input { width:100%; min-height:38px; padding:8px; border:1px solid #3b514c; border-radius:9px; background:#101a18; color:#e5f3ef; font:inherit; } .blocked-roads-field input:focus { border-color:#36b89b; outline:2px solid #36b89b55; outline-offset:1px; }
 
 .package-control { display:inline-flex; align-items:center; gap:4px; margin-top:7px; color:#b6cbc5; font-size:.72rem; } .package-input { width:52px; min-height:29px; padding:4px 6px; border:1px solid #31534d; border-radius:7px; background:#0e201d; color:#f3fffb; text-align:center; font-weight:700; }
+.feasibility-report { margin: 14px 0 10px; padding: 12px 14px; border: 1px solid #31534d; border-radius: 10px; background: #0e201d; }
+.feasibility-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #f3fffb; }
+.feasibility-badge { padding: 4px 8px; border-radius: 999px; font-size: .72rem; font-weight: 800; }
+.feasibility-ok { color: #07100e; background: #6ee7c8; }
+.feasibility-warning { color: #241407; background: #f2b35d; }
+.feasibility-summary { margin: 8px 0 4px; color: #b6cbc5; font-size: .78rem; }
+.feasibility-issues { margin: 6px 0 0; padding-left: 18px; color: #d8e8e3; font-size: .76rem; }
+.feasibility-issues li + li { margin-top: 4px; }
