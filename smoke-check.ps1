@@ -24,4 +24,5 @@ foreach ($entry in $htmlChecks.GetEnumerator()) {
 if ((Get-Content -Raw storage.js) -notmatch 'getActiveSnapshot') { throw 'IndexedDB fără recuperarea checkpoint-ului activ.' }
 if ((Get-Content -Raw app.js) -notmatch 'invalidateOptimization') { throw 'Optimizerul nu invalidează ruta după modificări.' }
 if ((Get-Content -Raw completed.js) -notmatch 'export-history') { throw 'Istoricul nu are exportul CSV.' }
+if ((Get-Content -Raw routes.js) -notmatch "\$\('#complete-next'\)\?\.addEventListener") { throw 'Butonul pentru următorul stop nu are handler.' }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
