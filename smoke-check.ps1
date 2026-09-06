@@ -11,6 +11,7 @@ $manifest = Get-Content -Raw manifest.json | ConvertFrom-Json
 if (-not $manifest.name -or -not $manifest.start_url -or -not $manifest.icons) { throw 'Manifest PWA incomplet.' }
 $sw = Get-Content -Raw sw.js
 if ($sw -notmatch "CACHE_NAME") { throw 'Service worker fără cache configurat.' }
+if ($sw -notmatch 'tile\.openstreetmap\.org') { throw 'Service worker fără cache pentru dalele OpenStreetMap.' }
 $htmlChecks = @{
   'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next')
