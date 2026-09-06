@@ -1,4 +1,4 @@
-const CACHE_NAME = 'route-optimizer-pwa-v191';
+const CACHE_NAME = 'route-optimizer-pwa-v192';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
 async function cacheRuntimeResponse(cache, request, response) { await cache.put(request, response); const keys = await cache.keys(); if (keys.length > 300) await Promise.all(keys.slice(0, keys.length - 300).map((key) => cache.delete(key))); }
 const APP_SHELL = [
@@ -7,8 +7,9 @@ const APP_SHELL = [
   './manifest.json', './storage.js', './pwa.js', './leaflet.js', './leaflet.css', './icon-192.svg', './icon-512.svg', './ocr/tesseract.min.js', './ocr/worker.min.js', './ocr/tesseract-core.wasm.js', './ocr/tesseract-core.wasm', './ocr/lang-data/ron.traineddata.gz'
 ];
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => undefined));
 });
+self.addEventListener('message', (event) => { if (event.data?.type === 'SKIP_WAITING') self.skipWaiting(); });
 self.addEventListener('activate', (event) => {
   event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => ![CACHE_NAME, RUNTIME_CACHE].includes(key)).map((key) => caches.delete(key)))).then(() => self.clients.claim()));
 });
@@ -28,6 +29,7 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
 
 
 

@@ -95,4 +95,6 @@ if ((Get-Content -Raw routes.js) -notmatch 'keydown.*Escape') { throw 'Închider
 if ((Get-Content -Raw app.js) -notmatch 'packageCount') { throw 'Numărul de colete nu este implementat.' }
 if ((Get-Content -Raw app.js) -notmatch 'Capacitatea vehiculului este depășită') { throw 'Validarea capacității lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'renderFeasibilityReport') { throw 'Raportul de fezabilitate lipsește.' }
+if ((Get-Content -Raw pwa.js) -notmatch 'SKIP_WAITING' -or (Get-Content -Raw pwa.js) -notmatch 'Actualizează aplicația') { throw 'Fluxul de actualizare PWA lipsește.' }
+if ((Get-Content -Raw sw.js) -notmatch 'event\.data\?\.type === .SKIP_WAITING.') { throw 'Service worker-ul nu acceptă actualizarea la cerere.' }
 
