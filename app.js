@@ -145,3 +145,4 @@ function normalizeOcrLine(line) { return line.replace(/[|]/g, 'I').replace(/[–
 function extractPostalCode(line) { const match = line.match(/\b(\d{6})\b/); return match ? match[1] : ''; }
 function cleanOcrLines(rawText) { return rawText.split(/\r?\n|\s*;\s*|\s+\|\s+/).map(normalizeOcrLine).filter((line) => line.length >= 5 && /\d|strada|șoseaua|bulevardul|calea|aleea|nr\.?|bl\.?/i.test(line)).map((line) => { const postalCode = extractPostalCode(line); return postalCode && !/cod poștal/i.test(line) ? `${line} (cod poștal ${postalCode})` : line; }); }
 document.querySelector('#traffic-level')?.addEventListener('change', saveState);
+['optimization-mode', 'vehicle-profile', 'traffic-level'].forEach((id) => document.querySelector(`#${id}`)?.addEventListener('change', () => { if (state.start && state.stops.length) calculateRoute(); }));
