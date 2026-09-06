@@ -33,6 +33,9 @@ if ((Get-Content -Raw app.js) -notmatch 'approximateDurationMatrix' -or (Get-Con
 if ((Get-Content -Raw app.js) -notmatch 'candidateScore') { throw 'Optimizerul nu folosește scorarea ferestrelor orare.' }
 if ((Get-Content -Raw app.js) -notmatch 'plannedBreakMinutes') { throw 'Pauzele automate nu sunt incluse în durata rutei.' }
 if ((Get-Content -Raw app.js) -notmatch 'blockedRoadMatch') { throw 'Străzile blocate nu sunt detectate în stopuri.' }
+$appSource = Get-Content -Raw app.js
+if (([regex]::Matches($appSource, 'const departureValue')).Count -gt 1) { throw 'calculateRoute declară departureValue de mai multe ori.' }
+if (([regex]::Matches($appSource, 'let elapsedMinutes = 0')).Count -gt 1) { throw 'calculateRoute declară elapsedMinutes de mai multe ori.' }
 if ((Get-Content -Raw app.js) -notmatch 'optimizationMatrix' -or (Get-Content -Raw app.js) -notmatch 'annotations=duration,distance') { throw 'Modul de optimizare pe distanță lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'cleanPoint' -or (Get-Content -Raw app.js) -notmatch 'cleanStops') { throw 'Sanitizarea coordonatelor restaurate lipsește.' }
 if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
