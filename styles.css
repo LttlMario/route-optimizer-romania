@@ -151,3 +151,5 @@ button.ghost { background: transparent; color: #9bb2ac; }
 .optimization-mode { display: flex; align-items: center; gap: 8px; margin: 10px 0; color: #b6cbc5; }
 .optimization-mode select { flex: 1; min-height: 38px; padding: 8px; border: 1px solid #3b514c; border-radius: 9px; background: #101a18; color: #e5f3ef; font: inherit; }
 @media (max-width: 560px) { .saved-route-row { grid-template-columns: 1fr 1fr; } .saved-route-row input, .saved-route-row select { grid-column: span 2; } }
+
+.blocked-roads-field { display:flex; flex-direction:column; gap:6px; margin:10px 0 4px; color:#b6cbc5; font-size:.78rem; font-weight:600; } .blocked-roads-field input { width:100%; min-height:38px; padding:8px; border:1px solid #3b514c; border-radius:9px; background:#101a18; color:#e5f3ef; font:inherit; } .blocked-roads-field input:focus { border-color:#36b89b; outline:2px solid #36b89b55; outline-offset:1px; }

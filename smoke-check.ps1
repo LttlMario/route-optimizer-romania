@@ -13,7 +13,7 @@ $sw = Get-Content -Raw sw.js
 if ($sw -notmatch "CACHE_NAME") { throw 'Service worker fără cache configurat.' }
 if ($sw -notmatch 'tile\.openstreetmap\.org') { throw 'Service worker fără cache pentru dalele OpenStreetMap.' }
 $htmlChecks = @{
-  'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration')
+  'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads')
   'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next')
   'completed.html' = @('history-list', 'history-filter', 'export-history', 'clear-history')
 }
@@ -31,6 +31,7 @@ if ((Get-Content -Raw app.js) -notmatch 'fetchRoutingWithRetry') { throw 'Rutare
 if ((Get-Content -Raw app.js) -notmatch 'approximateDurationMatrix' -or (Get-Content -Raw app.js) -notmatch 'approximateRoute') { throw 'Fallback-ul local pentru rutare lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'candidateScore') { throw 'Optimizerul nu folosește scorarea ferestrelor orare.' }
 if ((Get-Content -Raw app.js) -notmatch 'plannedBreakMinutes') { throw 'Pauzele automate nu sunt incluse în durata rutei.' }
+if ((Get-Content -Raw app.js) -notmatch 'blockedRoadMatch') { throw 'Străzile blocate nu sunt detectate în stopuri.' }
 if ((Get-Content -Raw app.js) -notmatch 'optimizationMatrix' -or (Get-Content -Raw app.js) -notmatch 'annotations=duration,distance') { throw 'Modul de optimizare pe distanță lipsește.' }
 if ((Get-Content -Raw app.js) -notmatch 'cleanPoint' -or (Get-Content -Raw app.js) -notmatch 'cleanStops') { throw 'Sanitizarea coordonatelor restaurate lipsește.' }
 if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
