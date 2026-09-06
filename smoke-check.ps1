@@ -55,6 +55,7 @@ if ((Get-Content -Raw routes.js) -notmatch 'courierMarker\.remove\(\)') { throw 
 if ((Get-Content -Raw routes.js) -notmatch 'error\?\.code === 1' -or (Get-Content -Raw routes.js) -notmatch 'error\?\.code === 3') { throw 'Erorile GPS nu au mesaje diferențiate.' }
 if ((Get-Content -Raw routes.html) -notmatch 'id="status"') { throw 'Pagina routes nu are status inline.' }
 if ((Get-Content -Raw routes.js) -notmatch 'hasOwnProperty\.call\(STATUS_LABELS') { throw 'Statusurile de livrare nu sunt validate.' }
+if ((Get-Content -Raw routes.js) -notmatch 'function isProcessed') { throw 'Stopurile cu status nu sunt tratate ca procesate.' }
 if ((Get-Content -Raw routes.html) -notmatch 'next-stop-address[^>]*aria-live="polite"') { throw 'Următorul stop nu are anunț accesibil.' }
 if ((Get-Content -Raw routes.js) -notmatch 'setInterval\(\(\) => save\(\), 30000\)') { throw 'Ruta nu are autosalvare periodică.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB nu închide conexiunile după scriere.' }
