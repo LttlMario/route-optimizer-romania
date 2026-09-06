@@ -42,3 +42,4 @@ if ((Get-Content -Raw routes.js) -notmatch 'navigator\.share' -or (Get-Content -
 if ((Get-Content -Raw routes.js) -notmatch 'visibilitychange.*recalculateRemainingEta') { throw 'ETA nu se recalculează la revenirea în prim-plan.' }
 if ((Get-Content -Raw app.js) -notmatch 'data-move-to' -or (Get-Content -Raw app.js) -notmatch 'data-swap' -or (Get-Content -Raw app.js) -notmatch 'position-input') { throw 'Editorul avansat al stopurilor este incomplet.' }
 if ((Get-Content -Raw routes.js) -notmatch 'pageshow.*recalculateRemainingEta') { throw 'ETA nu se reîncarcă la restaurarea paginii.' }
+if ((Get-Content -Raw routes.js) -match 'window\.alert\(message\)') { throw 'GPS folosește o alertă blocantă.' }
