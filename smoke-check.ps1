@@ -30,3 +30,4 @@ if ((Get-Content -Raw app.js) -notmatch 'fetchWithTimeout') { throw 'Rutarea OSR
 if ((Get-Content -Raw storage.js) -notmatch '!data\?\.start.*data\?\.stops') { throw 'Checkpoint-ul zilnic nu este protejat la golire.' }
 foreach ($provider in @('google', 'apple', 'waze')) { if ((Get-Content -Raw routes.js) -notmatch $provider) { throw "Navigarea $provider lipsește." } }
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
+if ((Get-Content -Raw routes.html) -notmatch 'share-route') { throw 'Butonul de distribuire lipsește.' }
