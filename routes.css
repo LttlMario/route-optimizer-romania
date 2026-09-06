@@ -122,3 +122,6 @@ html, body { overflow-x: hidden; }
 }
 .history-list { list-style: none !important; padding-left: 0 !important; }
 .history-list > .history-day, .history-list > .history-entry { list-style: none !important; }
+
+.diagnostic-feedback { min-height: 1.2em; margin: 10px 0 0; color: #6ee7c8; font-size: .8rem; }
+button:disabled { opacity: .65; cursor: wait; }
