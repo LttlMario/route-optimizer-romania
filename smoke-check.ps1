@@ -33,3 +33,4 @@ foreach ($provider in @('google', 'apple', 'waze')) { if ((Get-Content -Raw rout
 Write-Host 'Smoke check trecut: fișiere, JavaScript și PWA valide.' -ForegroundColor Green
 if ((Get-Content -Raw routes.html) -notmatch 'share-route') { throw 'Butonul de distribuire lipsește.' }
 if ((Get-Content -Raw routes.js) -notmatch '#share-route') { throw 'Butonul de distribuire nu are handler.' }
+if ((Get-Content -Raw routes.js) -notmatch 'navigator\.share' -or (Get-Content -Raw routes.js) -notmatch 'clipboard\.writeText') { throw 'Distribuirea nu are Web Share și fallback clipboard.' }
