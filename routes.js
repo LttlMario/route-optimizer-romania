@@ -33,7 +33,7 @@ $('#finish-job').addEventListener('click', async () => { if (!window.confirm('Î
 async function initializeRoutePage() { if (!state.start && !state.end && !state.stops.length) { const snapshot = await getActiveSnapshot(); const data = snapshot?.data; if (data && (data.start || data.end || data.stops?.length)) { Object.assign(state, data); state.start = cleanPoint(state.start); state.end = cleanPoint(state.end); state.stops = cleanStops(state.stops); setStatus('Ruta activă a fost restaurată automat'); } } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100); } initializeRoutePage();
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
-document.addEventListener('visibilitychange', () => { if (document.hidden) { #navigation-options.hidden = true; return; } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { $('#navigation-options').hidden = true; return; } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); });
 
 
 
@@ -74,4 +74,6 @@ window.addEventListener('pagehide', () => { if (locationWatchId !== null && navi
 
 function refreshLiveDelay() { const next = nextStop(); if (!next?.etaAt) return; const lateMinutes = Math.max(0, Math.round((Date.now() - Number(next.etaAt)) / 60000)); if (lateMinutes > Number(state.routeDelayMinutes || 0)) { state.routeDelayMinutes = lateMinutes; decorateRouteDelay(); updateProgress(); } }
 window.setInterval(refreshLiveDelay, 30000);
+
+
 
