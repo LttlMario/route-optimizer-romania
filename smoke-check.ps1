@@ -81,3 +81,5 @@ if ((Get-Content -Raw app.js) -notmatch 'function getTrafficFactor') { throw 'Fa
 if ((Get-Content -Raw index.html) -notmatch 'value=.*auto') { throw 'Modul automat de trafic lipsește.' }
 
 if ((Get-Content -Raw app.js) -notmatch 'const previous = editIndex') { throw 'Editarea stopului nu păstrează setările existente.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'const serviceValue') { throw 'Editarea nu permite setarea staționării la zero.' }
