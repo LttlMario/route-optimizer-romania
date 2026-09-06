@@ -27,3 +27,7 @@ Pagina principală este `index.html`. După optimizare, `routes.html` este pagin
 ```
 
 Nominatim, OSRM și hărțile OpenStreetMap sunt servicii publice. Pentru utilizare intensă sau comercială trebuie respectate limitele și politicile lor.
+
+- distribuire nativă a rutei pe telefon prin Web Share, cu fallback la clipboard;
+- istoricul statusurilor se migrează automat în IndexedDB, iar ruta activă se poate restaura după redeschidere;
+- cache-ul offline pentru hărți și resurse runtime este limitat pentru a proteja spațiul telefonului.
