@@ -54,6 +54,7 @@
 .status-delivered { background: #8ee5b6; }.status-absent { background: #f0b55e; }.status-wrong-address { background: #f08a9c; }.status-rescheduled { background: #a6b8ff; }.status-cancelled { background: #a9beb8; }
 .navigation-preference { display:flex; align-items:center; gap:8px; margin:12px 0; color:#8aa19b; font-size:.82rem; }
 .navigation-preference select { min-height:38px; }
+.break-button { width: 100%; margin-top: 10px; padding: 9px; border: 1px solid #52726a; border-radius: 9px; background: #1d302c; color: #8ce5d0; font: inherit; font-weight: 700; cursor: pointer; }
 .locate-courier { position: absolute; z-index: 700; top: 14px; left: 150px; padding: 9px 13px; border: 1px solid #52726a; border-radius: 9px; background: #172321e8; color: #d8f5ed; font: inherit; font-weight: 700; cursor: pointer; }
 .courier-location-icon { display: grid; place-items: center; border: 2px solid #fff; border-radius: 50%; background: #2563eb; box-shadow: 0 0 0 6px #2563eb44, 0 2px 8px #0008; }
 .courier-location-icon span { width: 7px; height: 7px; border-radius: 50%; background: #fff; }
