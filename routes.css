@@ -96,3 +96,27 @@ html, body { overflow-x: hidden; }
 .delay-button{width:100%;margin-top:8px;padding:9px;border:1px solid #8c6736;border-radius:9px;background:#3b2c1b;color:#f0c47a;font:inherit;font-weight:700;cursor:pointer}.delay-button:hover{border-color:#f0b55e;background:#513b20}
 .update-app { padding: 9px 12px; border: 1px solid #f2b35d; border-radius: 9px; background: #5a391c; color: #ffd59a; font-size: .78rem; font-weight: 800; }
 .update-app:hover { background: #f2b35d; color: #241407; }
+/* Istoric livrări: carduri lizibile și fără numerotare implicită a listei */
+.history-shell { padding-top: 28px; padding-bottom: 28px; }
+.history-shell .route-header { align-items: center; }
+.history-card { width: min(900px, 100%); margin: 0 auto; padding: 22px; }
+.history-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 10px; }
+.history-stats span { min-width: 0; text-align: center; }
+.history-list { list-style: none; display: grid; gap: 10px; margin: 0; padding: 0; }
+.history-day { margin-top: 8px !important; padding: 10px 12px !important; }
+.history-entry { display: grid; gap: 3px; min-width: 0; padding: 13px 14px !important; border: 1px solid #2a3c39 !important; border-left: 4px solid #36b89b !important; border-radius: 10px; background: #101a18; }
+.history-entry strong { overflow-wrap: anywhere; color: #d8f5ed !important; line-height: 1.35; }
+.history-entry small { color: #8aa19b; }
+.history-entry.status-delivered { border-left-color: #8ee5b6 !important; }
+.history-entry.status-absent { border-left-color: #f0b55e !important; }
+.history-entry.status-wrong-address { border-left-color: #f08a9c !important; }
+.history-entry.status-rescheduled { border-left-color: #7b8fe8 !important; }
+.history-entry.status-cancelled { border-left-color: #8a9a95 !important; }
+@media (max-width: 800px) {
+  .history-shell { padding: 18px 14px 24px; }
+  .history-shell .route-header { width: 100%; margin-bottom: 16px !important; }
+  .history-shell .route-header h1 { font-size: clamp(1.75rem, 9vw, 2.4rem); }
+  .history-actions { width: 100%; display: grid; grid-template-columns: 1fr; }
+  .history-actions select, .history-actions button { width: 100%; min-height: 42px; }
+  .history-card { padding: 14px; }
+}
