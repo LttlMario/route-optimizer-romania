@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$required = @('index.html', 'routes.html', 'completed.html', 'app.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json', 'leaflet.js', 'leaflet.css')
+$required = @('index.html', 'routes.html', 'completed.html', 'app.js', 'routes.js', 'completed.js', 'storage.js', 'sw.js', 'manifest.json', 'leaflet.js', 'leaflet.css', 'ocr/tesseract.min.js', 'ocr/worker.min.js', 'ocr/tesseract-core.wasm.js', 'ocr/tesseract-core.wasm', 'ocr/lang-data/ron.traineddata.gz')
 foreach ($file in $required) {
   if (-not (Test-Path -LiteralPath $file)) { throw "Lipsește fișierul obligatoriu: $file" }
 }
@@ -55,7 +55,7 @@ if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*Marchează stopul' -or (
 if ((Get-Content -Raw routes.js) -notmatch 'aria-label.*urmărirea GPS') { throw 'Butonul GPS nu are etichetă accesibilă.' }
 if ((Get-Content -Raw app.js) -notmatch 'response\.status === 429') { throw 'Geocoderul nu tratează limitarea Nominatim.' }
 if ((Get-Content -Raw app.js) -notmatch 'navigator\.onLine === false') { throw 'Geocoderul nu are mesaj offline.' }
-if ((Get-Content -Raw app.js) -notmatch 'OCR-ul nu este încă disponibil offline') { throw 'Scanarea OCR offline nu are mesaj clar.' }
+if ((Get-Content -Raw app.js) -notmatch '\./ocr/tesseract\.min\.js' -or (Get-Content -Raw app.js) -notmatch 'langPath') { throw 'Scanarea OCR locală nu este configurată.' }
 if ((Get-Content -Raw routes.js) -notmatch 'pagehide.*stopLocationWatch') { throw 'GPS watch nu se oprește la pagehide.' }
 if ((Get-Content -Raw routes.js) -notmatch 'courierMarker\.remove\(\)') { throw 'Markerul GPS nu este curățat.' }
 if ((Get-Content -Raw routes.js) -notmatch 'error\?\.code === 1' -or (Get-Content -Raw routes.js) -notmatch 'error\?\.code === 3') { throw 'Erorile GPS nu au mesaje diferențiate.' }
