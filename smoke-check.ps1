@@ -33,6 +33,7 @@ if ((Get-Content -Raw app.js) -notmatch 'approximateDurationMatrix' -or (Get-Con
 if ((Get-Content -Raw app.js) -notmatch 'candidateScore') { throw 'Optimizerul nu folosește scorarea ferestrelor orare.' }
 if ((Get-Content -Raw app.js) -notmatch 'plannedBreakMinutes') { throw 'Pauzele automate nu sunt incluse în durata rutei.' }
 if ((Get-Content -Raw app.js) -notmatch 'blockedRoadMatch') { throw 'Străzile blocate nu sunt detectate în stopuri.' }
+if ((Get-Content -Raw app.js) -notmatch 'state\.routeGeometry\) state\.routeLayer = L\.geoJSON') { throw 'Traseul salvat nu este restaurat pe hartă.' }
 $appSource = Get-Content -Raw app.js
 if (([regex]::Matches($appSource, 'const departureValue')).Count -gt 1) { throw 'calculateRoute declară departureValue de mai multe ori.' }
 if (([regex]::Matches($appSource, 'let elapsedMinutes = 0')).Count -gt 1) { throw 'calculateRoute declară elapsedMinutes de mai multe ori.' }
