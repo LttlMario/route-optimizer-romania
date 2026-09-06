@@ -74,3 +74,5 @@ if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB 
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\); resolve') { throw 'IndexedDB nu închide conexiunile după citire.' }
 
 if ((Get-Content -Raw routes.js) -notmatch 'completeButton\.hidden = !next') { throw 'Butonul de livrare nu se ascunde pentru Finish.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'function exactOrder') { throw 'Optimizarea exactă pentru rute mici lipsește.' }
