@@ -15,7 +15,7 @@ if ($sw -notmatch 'tile\.openstreetmap\.org') { throw 'Service worker fără cac
 if ((Get-Content -Raw index.html) -notmatch 'src="\./leaflet\.js"' -or (Get-Content -Raw routes.html) -notmatch 'src="\./leaflet\.js"') { throw 'Paginile nu folosesc biblioteca Leaflet locală.' }
 $htmlChecks = @{
   'index.html' = @('start-address', 'end-address', 'optimize', 'road-avoidance', 'break-after', 'break-duration', 'blocked-roads')
-  'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next', 'wake-lock')
+  'routes.html' = @('delivery-list', 'route-map', 'navigate-next', 'complete-next', 'wake-lock', 'add-delay')
   'completed.html' = @('history-list', 'history-filter', 'export-history', 'clear-history')
 }
 foreach ($entry in $htmlChecks.GetEnumerator()) {
@@ -67,6 +67,7 @@ if ((Get-Content -Raw routes.js) -notmatch 'wakeLock') { throw 'Pagina de livrar
 if ((Get-Content -Raw routes.js) -notmatch 'historyKey') { throw 'Istoricul nu identifică unic stopurile dintr-o rută.' }
 if ((Get-Content -Raw storage.js) -notmatch 'existing\.filter\(\(item\) => item\.historyKey') { throw 'IndexedDB nu actualizează intrările duplicate din istoric.' }
 if ((Get-Content -Raw routes.js) -notmatch 'function refreshLiveDelay\(\) \{ recalculateRemainingEta\(\)') { throw 'ETA live nu se recalculează periodic.' }
+if ((Get-Content -Raw routes.js) -notmatch 'function addRouteDelay') { throw 'Întârzierea manuală nu actualizează ETA.' }
 if ((Get-Content -Raw routes.html) -notmatch 'next-stop-address[^>]*aria-live="polite"') { throw 'Următorul stop nu are anunț accesibil.' }
 if ((Get-Content -Raw routes.js) -notmatch 'setInterval\(\(\) => save\(\), 30000\)') { throw 'Ruta nu are autosalvare periodică.' }
 if ((Get-Content -Raw storage.js) -notmatch 'db\.close\(\)') { throw 'IndexedDB nu închide conexiunile după scriere.' }
