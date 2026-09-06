@@ -1,4 +1,4 @@
-import { saveSnapshot, saveCompletedStop } from './storage.js';
+import { saveSnapshot, saveCompletedStop, getActiveSnapshot } from './storage.js';
 const STORAGE_KEY = 'route-optimizer-romania-v1';
 const COMPLETED_KEY = 'route-optimizer-completed-v1';
 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -26,7 +26,7 @@ function toggleMobileRouteView() { const workspace = document.querySelector('.ro
 $('#toggle-route-view-mobile').addEventListener('click', toggleMobileRouteView);
 $('#map-back-to-list').addEventListener('click', toggleMobileRouteView);
 $('#finish-job').addEventListener('click', async () => { if (!window.confirm('Închei jobul și pornesc o rută nouă? Istoricul livrărilor rămâne salvat.')) return; localStorage.removeItem(STORAGE_KEY); await saveSnapshot({ start: null, end: null, stops: [], routeGeometry: null, routeDistance: 0, routeDuration: 0 }); window.location.href = 'index.html'; }); $('#close-status-modal').addEventListener('click', () => { $('#delivery-status-modal').hidden = true; }); $('#save-delivery-status').addEventListener('click', saveStatusEditor);
-recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100);
+async function initializeRoutePage() { if (!state.start && !state.end && !state.stops.length) { const snapshot = await getActiveSnapshot(); const data = snapshot?.data; if (data && (data.start || data.end || data.stops?.length)) { Object.assign(state, data); setStatus('Ruta activă a fost restaurată automat'); } } recalculateRemainingEta(); save(); renderList(); updateProgress(); drawMap(); setTimeout(() => map.invalidateSize(), 100); } initializeRoutePage();
 
 window.addEventListener('blur', () => { $('#navigation-options').hidden = true; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) $('#navigation-options').hidden = true; });
