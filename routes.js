@@ -64,3 +64,5 @@ const delayObserver = new MutationObserver(() => decorateRouteDelay()); delayObs
 
 #complete-next?.addEventListener('click', () => { const stop = nextStop(); if (!stop || stop.isFinish) return; openStatusEditor(state.stops.indexOf(stop)); });
 
+
+window.addEventListener('pagehide', () => { if (locationWatchId !== null && navigator.geolocation) navigator.geolocation.clearWatch(locationWatchId); });
