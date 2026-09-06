@@ -31,3 +31,12 @@ Nominatim, OSRM și hărțile OpenStreetMap sunt servicii publice. Pentru utiliz
 - distribuire nativă a rutei pe telefon prin Web Share, cu fallback la clipboard;
 - istoricul statusurilor se migrează automat în IndexedDB, iar ruta activă se poate restaura după redeschidere;
 - cache-ul offline pentru hărți și resurse runtime este limitat pentru a proteja spațiul telefonului.
+
+Pentru verificarea automată în Chrome headless, pe desktop și mobil:
+
+```powershell
+./browser-smoke.ps1
+./browser-smoke.ps1 -BaseUrl https://lttlmario.github.io/route-optimizer-romania/
+```
+
+Resursele OCR românești sunt incluse în folderul `ocr/` și sunt adăugate în cache-ul PWA.
