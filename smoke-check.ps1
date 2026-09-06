@@ -87,3 +87,5 @@ if ((Get-Content -Raw app.js) -notmatch 'const serviceValue') { throw 'Editarea 
 if ((Get-Content -Raw routes.js) -notmatch 'close-status-modal.*delivery-status-modal.*hidden = true') { throw 'Închiderea ferestrei de status nu ascunde modalul.' }
 
 if ((Get-Content -Raw routes.js) -notmatch 'arrivalAt = stop.arrivalAt.*save\(\)') { throw 'Ora de sosire nu se salvează la deschiderea livrării.' }
+
+if ((Get-Content -Raw app.js) -notmatch 'async function waitForGeocoder') { throw 'Limitarea cererilor Nominatim lipsește.' }
