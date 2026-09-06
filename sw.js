@@ -1,4 +1,4 @@
-const CACHE_NAME = 'route-optimizer-pwa-v86';
+const CACHE_NAME = 'route-optimizer-pwa-v87';
 const RUNTIME_CACHE = 'route-optimizer-runtime-v1';
 const APP_SHELL = [
   './', './index.html', './routes.html', './completed.html',
@@ -26,6 +26,7 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
+
 
 
 
