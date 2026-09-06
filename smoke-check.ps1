@@ -89,3 +89,5 @@ if ((Get-Content -Raw routes.js) -notmatch 'close-status-modal.*delivery-status-
 if ((Get-Content -Raw routes.js) -notmatch 'arrivalAt = stop.arrivalAt.*save\(\)') { throw 'Ora de sosire nu se salvează la deschiderea livrării.' }
 
 if ((Get-Content -Raw app.js) -notmatch 'async function waitForGeocoder') { throw 'Limitarea cererilor Nominatim lipsește.' }
+
+if ((Get-Content -Raw routes.js) -notmatch 'keydown.*Escape') { throw 'Închiderea rapidă cu Escape lipsește.' }
