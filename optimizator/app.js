@@ -21,7 +21,7 @@ let pendingResolution = null;
 function setStatus(text, tone = 'neutral') { const node = $('#engine-status'); node.textContent = text; node.className = `status ${tone}`; }
 function message(text, error = false) { const node = $('#message'); node.textContent = text; node.className = `message ${error ? 'error' : 'good'}`; }
 function updateNetworkState() { const node = $('#network-state'); if (!node) return; const online = navigator.onLine !== false; node.textContent = online ? 'Online · servicii live' : 'Offline · cache local'; node.className = online ? 'network-online' : 'network-offline'; }
-async function showOfflineRoads() { if (offlineRoadLayer) return; try { const geometry = await loadOfflineRoads(); offlineRoadLayer = L.geoJSON(geometry, { style: { color: '#6b817b', weight: 1.2, opacity: .58 } }).addTo(map); } catch (error) { message(error.message, true); } }
+async function showOfflineRoads() { if (offlineRoadLayer) return; try { const geometry = await loadOfflineRoads(); offlineRoadLayer = L.geoJSON(geometry, { style: { color: '#6b817b', weight: 1.2, opacity: .58 } }).addTo(map); const points = [state.start, ...routeStops().filter(validImportedPoint)].filter(Boolean); if (points.length < 1 && offlineRoadLayer.getBounds().isValid()) map.fitBounds(offlineRoadLayer.getBounds().pad(.08)); } catch (error) { message(error.message, true); } }
 function hideOfflineRoads() { if (offlineRoadLayer) { offlineRoadLayer.remove(); offlineRoadLayer = null; } }
 function invalidateCalculation() { state.calculationId += 1; }
 function formatDistance(meters) { return `${(Number(meters || 0) / 1000).toFixed(1)} km`; }
