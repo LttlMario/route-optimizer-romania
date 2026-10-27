@@ -1,4 +1,4 @@
-const CACHE_NAME = 'optimizator-static-v91';
+const CACHE_NAME = 'optimizator-static-v92';
 const STATIC_ASSETS = [
   '/optimizator/index.html',
   '/optimizator/styles.css',
