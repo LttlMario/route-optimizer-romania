@@ -5,3 +5,8 @@
 .address-edit{display:flex;gap:7px;margin-top:8px}.address-edit input{min-width:0;margin:0;font-size:11px;padding:8px}.address-edit button{flex:none;margin:0}
 input[hidden]{display:none!important}
 
+/* Hartă compactă, cu înălțime controlată dinamic de numărul de opriri. */
+.map-panel{min-height:calc(var(--map-height, 340px) + 48px)}
+.map-panel #map{height:var(--map-height, 340px);min-height:0;flex:none}
+@media(max-width:850px){.map-panel{min-height:calc(var(--map-height, 320px) + 48px)}.map-panel #map{height:var(--map-height, 320px)}}
+
