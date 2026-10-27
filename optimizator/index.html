@@ -61,6 +61,13 @@
         </label>
         <label class="check"><input id="offline-mode" type="checkbox" /> Mod offline Devon · fără API și fără server</label>
         <p class="hint">Modul offline folosește graful rutier Devon salvat în aplicație. Adresele noi trebuie să fie deja în indexul offline sau adăugate prin atingerea hărții.</p>
+        <section class="offline-search" aria-labelledby="offline-search-title">
+          <strong id="offline-search-title">Caută separat o adresă offline</strong>
+          <input id="offline-address-search" list="offline-address-suggestions" autocomplete="off" placeholder="Ex: 107 Alphington Road, Exeter" />
+          <datalist id="offline-address-suggestions"></datalist>
+          <div class="offline-search-actions"><button id="offline-address-find" class="secondary" type="button">Caută în harta offline</button><select id="offline-search-provider" aria-label="Alege aplicația de navigare"><option value="google">Google Maps</option><option value="waze">Waze</option><option value="apple">Apple Maps</option></select><a id="offline-address-go" class="secondary" target="_blank" rel="noopener" hidden>Mergi către locație</a></div>
+          <p id="offline-address-result" class="hint" aria-live="polite">Căutarea este independentă de ruta curentă.</p>
+        </section>
         <label>Străzi / zone închise temporar (opțional)
           <textarea id="blocked-addresses" rows="3" placeholder="Stradă, zonă sau intersecție, câte una pe rând"></textarea>
         </label>
