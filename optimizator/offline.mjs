@@ -1,5 +1,18 @@
 let graphPromise;
 let roadsPromise;
+const OFFLINE_CACHE = 'optimizator-offline-data-v1';
+
+async function cachedOfflineFetch(path) {
+  try {
+    const response = await fetch(path, { cache: 'no-cache' });
+    if (response.ok) {
+      if ('caches' in window) { const cache = await caches.open(OFFLINE_CACHE); await cache.put(path, response.clone()); }
+      return response;
+    }
+  } catch { /* încearcă apoi cache-ul local */ }
+  if ('caches' in window) { const cached = await caches.match(path); if (cached) return cached; }
+  throw new Error('Datele offline nu sunt descărcate pe acest dispozitiv. Conectează-te o dată la internet și apasă „Descarcă harta offline Devon”.');
+}
 
 function normalize(value) {
   return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
@@ -7,8 +20,7 @@ function normalize(value) {
 
 async function loadGraph() {
   if (graphPromise) return graphPromise;
-  graphPromise = fetch('./offline-data/devon-road-graph.json.gz').then(async (response) => {
-    if (!response.ok) throw new Error('Harta offline Devon nu este disponibilă.');
+  graphPromise = cachedOfflineFetch('./offline-data/devon-road-graph.json.gz').then(async (response) => {
     const stream = response.body?.pipeThrough ? response.body.pipeThrough(new DecompressionStream('gzip')) : response.body;
     const graph = await new Response(stream).json();
     graph.grid = new Map();
@@ -26,8 +38,7 @@ async function loadGraph() {
 
 export async function loadOfflineRoads() {
   if (roadsPromise) return roadsPromise;
-  roadsPromise = fetch('./offline-data/devon-roads-preview.json.gz').then(async (response) => {
-    if (!response.ok) throw new Error('Stratul de hartă offline Devon nu este disponibil.');
+  roadsPromise = cachedOfflineFetch('./offline-data/devon-roads-preview.json.gz').then(async (response) => {
     const stream = response.body?.pipeThrough ? response.body.pipeThrough(new DecompressionStream('gzip')) : response.body;
     const payload = await new Response(stream).json();
     return { type: 'FeatureCollection', features: (payload.segments || []).map((segment) => ({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: segment.map(([lat, lon]) => [lon, lat]) } })) };
@@ -142,6 +153,8 @@ export async function calculateOfflineRoute(points, returnStart = false) {
 }
 
 export async function offlineReady() { await loadGraph(); return true; }
+
+export async function prepareOfflineDevon() { await Promise.all([loadGraph(), loadOfflineRoads()]); return true; }
 
 export function canUseOfflineDevon(points) {
   return Array.isArray(points) && points.length > 1 && points.every((point) => {
