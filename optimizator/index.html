@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#087f6a" />
+  <title>Optimizator · România & Anglia</title>
+  <link rel="icon" href="../icon-192.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="../leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="access.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">MOTOR SEPARAT DE OPTIMIZARE</p>
+        <h1>Optimizator de rute</h1>
+        <p class="subtitle">România și Anglia · orice firmă · drumuri reale</p>
+      </div>
+      <span id="engine-status" class="status neutral">Pregătit</span>
+    </header>
+
+    <section class="grid">
+      <aside class="panel controls">
+        <div class="section-title"><span>01</span><h2>Profilul rutei</h2></div>
+        <div class="two-col">
+          <label>Țara
+            <select id="country"><option value="ro">România</option><option value="gb">Anglia</option></select>
+          </label>
+          <label>Curier
+            <select id="carrier"><option value="generic">Profil personal · orice firmă</option><option value="evri">Evri · preset</option><option value="yodel">Yodel · preset</option></select>
+          </label>
+        </div>
+        <div class="two-col">
+          <label>Pachete / vehicul (0 = fără limită)<input id="capacity" type="number" min="0" value="0" /></label>
+          <label>Minute / oprire<input id="service-time" type="number" min="0" value="3" /></label>
+        </div>
+        <div class="two-col">
+          <label>Greutate maximă kg<input id="max-weight" type="number" min="0" value="0" placeholder="0 = fără limită" /></label>
+          <label>Volum maxim m³<input id="max-volume" type="number" min="0" step="0.01" value="0" placeholder="0 = fără limită" /></label>
+        </div>
+        <label>Profil vehicul
+          <select id="vehicle-profile"><option value="car">Autoturism</option><option value="van">Dubă</option><option value="cargo-bike">Bicicletă cargo</option></select>
+        </label>
+        <label>Plecarea / depozitul
+          <div class="input-row"><input id="start-address" list="start-address-suggestions" placeholder="Adresă depozit sau punct de plecare" autocomplete="street-address" /><datalist id="start-address-suggestions"></datalist><button id="set-start" class="secondary">Adaugă</button></div>
+        </label>
+        <div class="button-row"><button id="use-location" class="secondary">Folosește locația mea</button><button id="recalc-location" class="secondary">Recalculează din GPS</button><button id="export-route" class="secondary">Exportă JSON</button><button id="export-csv" class="secondary">Exportă CSV</button><button id="import-route" class="secondary">Importă ruta</button><input id="route-file" type="file" accept="application/json,.json" hidden /></div>
+        <label class="check"><input id="return-start" type="checkbox" /> Revenire la depozit la final</label>
+        <label>Ora de plecare<input id="departure-time" type="time" /></label>
+        <label>Trafic estimat
+          <select id="traffic-level"><option value="auto">Automat după oră</option><option value="normal">Normal</option><option value="busy">Aglomerat</option><option value="heavy">Foarte aglomerat</option></select>
+        </label>
+        <label>Obiectivul optimizării
+          <select id="optimization-mode"><option value="balanced">Echilibrat</option><option value="fastest">Cel mai rapid</option><option value="priority">Priorități și ferestre</option></select>
+        </label>
+        <label>Restricție de drum
+          <select id="road-avoidance"><option value="none">Fără preferință</option><option value="motorway">Preferă evitarea autostrăzilor</option><option value="toll">Preferă evitarea drumurilor cu taxă</option><option value="ferry">Preferă evitarea feriboturilor</option></select>
+        </label>
+        <label class="check"><input id="offline-mode" type="checkbox" /> Mod offline Devon · fără API și fără server</label>
+        <p class="hint">Modul offline folosește graful rutier Devon salvat în aplicație. Adresele noi trebuie să fie deja în indexul offline sau adăugate prin atingerea hărții.</p>
+        <label>Străzi / zone închise temporar (opțional)
+          <textarea id="blocked-addresses" rows="3" placeholder="Stradă, zonă sau intersecție, câte una pe rând"></textarea>
+        </label>
+        <div class="button-row"><button id="add-blocked" class="secondary" type="button">Adaugă zonele de evitat</button></div>
+        <div id="blocked-list" class="blocked-list" aria-live="polite"></div>
+
+        <div class="section-title stops-title"><span>02</span><h2>Locații pentru rută</h2></div>
+        <label>Lipește adresele, câte una pe rând
+          <textarea id="bulk-addresses" rows="7" placeholder="Strada și numărul, oraș, cod poștal&#10;A doua adresă...&#10;A treia adresă..."></textarea>
+        </label>
+        <div class="button-row"><button id="add-bulk" class="secondary">Adaugă adresele</button><button id="verify-all" class="secondary">Verifică toate adresele</button><button id="scan" class="secondary">Scanează etichetă</button><input id="scan-file" type="file" accept="image/*" capture="environment" hidden /></div>
+        <div class="quick-address-tools">
+          <label>Adaugă o locație cu sugestie automată
+            <input id="quick-address" list="quick-address-suggestions" autocomplete="off" placeholder="Începe să tastezi strada și orașul..." />
+            <datalist id="quick-address-suggestions"></datalist>
+          </label>
+          <button id="add-quick-address" class="secondary">Adaugă locația aleasă</button>
+          <small id="quick-address-hint">Alege o sugestie completă pentru a evita adresele ambigue.</small>
+        </div>
+        <div class="button-row"><button id="import-csv" class="secondary">Importă CSV cu detalii</button><input id="csv-file" type="file" accept=".csv,text/csv" hidden /></div>
+        <div class="two-col endpoint-selectors">
+          <label>Plecare din locații
+            <select id="start-from-stop"><option value="">Depozit / plecare separată</option></select>
+          </label>
+          <label>Termină la
+            <select id="finish-at-stop"><option value="">Optimizează finalul automat</option></select>
+          </label>
+        </div>
+        <p class="hint">Scanarea citește textul de pe etichetă. Fiecare adresă este verificată pe hartă înainte de optimizare. Sugestiile învățate se păstrează doar local.</p>
+        <div id="scan-result" class="scan-result" hidden><strong>Text detectat</strong><textarea id="scan-text" rows="4"></textarea><button id="add-scan" class="secondary">Adaugă textul</button></div>
+
+        <div class="button-row actions"><button id="optimize" class="primary">Optimizează pe drumuri reale</button><button id="recalculate" class="secondary">Recalculează</button><button id="clear" class="ghost">Golește</button></div>
+        <div id="message" class="message" role="status"></div>
+      </aside>
+
+    <section class="panel map-panel"><div class="map-tools"><button id="map-add-mode" class="secondary" type="button">Adaugă de pe hartă</button><span id="map-hint">Atinge harta pentru o locație nouă</span></div><div id="map"></div><div class="map-foot"><span id="count">0 locații validate</span><span id="quality">Nicio rută calculată</span><span id="network-state" class="network-online">Online</span></div></section>
+    </section>
+
+    <section class="panel route-panel">
+      <div class="section-title"><span>03</span><h2>Rezultatul verificat</h2></div>
+      <div id="metrics" class="metrics"><div><strong>—</strong><span>Distanță</span></div><div><strong>—</strong><span>Timp total</span></div><div><strong>—</strong><span>Opriri</span></div><div><strong>—</strong><span>Verificare</span></div></div>
+      <div id="route-tools" class="route-tools" hidden><a id="route-navigation" class="secondary" target="_blank" rel="noopener">Deschide traseul în Google Maps</a><span>Ordinea optimizată va fi trimisă navigației.</span></div>
+      <div id="variant-list" class="variant-list" hidden></div>
+      <details id="directions" class="directions" hidden><summary>Instrucțiuni de drum OSRM</summary><ol id="directions-list"></ol></details>
+      <div id="stop-editor-list" class="stop-editor-list"></div>
+      <ol id="route-list" class="route-list"><li class="empty">Adaugă un depozit și locațiile pentru a începe.</li></ol>
+    </section>
+    <p class="legal-note">Modul online folosește date OpenStreetMap/OSRM, iar modul offline folosește graful local Devon. Niciun mod nu cunoaște în timp real toate lucrările, închiderile sau traficul; verifică întotdeauna avertismentele înainte de plecare.</p>
+  </main>
+  <script src="../leaflet.js"></script>
+  <script src="../ocr/tesseract.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
