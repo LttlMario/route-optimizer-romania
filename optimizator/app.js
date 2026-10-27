@@ -1,6 +1,6 @@
 import { applyLockedOrder, choosePriorityOrder, improveOrder as coreImproveOrder, routeCost as coreRouteCost, scheduleOrder, scoreRoute as coreScoreRoute, validateDurationMatrix, validateOrder, validateRouteAnchors, validateRouteAvoidances, validateRouteGeometry, validateRouteWaypoints, validateStops } from './core.mjs';
 import { applyAddressMemory, rememberAddress } from './memory.mjs';
-import { calculateOfflineRoute, canUseOfflineDevon, resolveOfflineAddress, searchOfflineAddresses } from './offline.mjs';
+import { calculateOfflineRoute, canUseOfflineDevon, loadOfflineRoads, resolveOfflineAddress, searchOfflineAddresses } from './offline.mjs';
 const $ = (selector) => document.querySelector(selector);
 const STORAGE_KEY = 'optimizator-independent-v1';
 const GEOCODE_KEY = 'optimizator-geocode-cache-v1';
@@ -11,6 +11,7 @@ const CARRIER = { generic: { label: 'Profil personal', service: 3, capacity: 0 }
 const state = { country: 'ro', carrier: 'generic', start: null, stops: [], blocked: [], finishStopKey: '', route: null, variantContext: null, mapAddMode: false, markers: [], routeLayer: null, calculationId: 0 };
 let map;
 let mapTiles;
+let offlineRoadLayer;
 let offlineSearchPoint = null;
 let offlineSearchMarker = null;
 let offlineSearchOrigin = null;
@@ -20,6 +21,8 @@ let pendingResolution = null;
 function setStatus(text, tone = 'neutral') { const node = $('#engine-status'); node.textContent = text; node.className = `status ${tone}`; }
 function message(text, error = false) { const node = $('#message'); node.textContent = text; node.className = `message ${error ? 'error' : 'good'}`; }
 function updateNetworkState() { const node = $('#network-state'); if (!node) return; const online = navigator.onLine !== false; node.textContent = online ? 'Online · servicii live' : 'Offline · cache local'; node.className = online ? 'network-online' : 'network-offline'; }
+async function showOfflineRoads() { if (offlineRoadLayer) return; try { const geometry = await loadOfflineRoads(); offlineRoadLayer = L.geoJSON(geometry, { style: { color: '#6b817b', weight: 1.2, opacity: .58 } }).addTo(map); } catch (error) { message(error.message, true); } }
+function hideOfflineRoads() { if (offlineRoadLayer) { offlineRoadLayer.remove(); offlineRoadLayer = null; } }
 function invalidateCalculation() { state.calculationId += 1; }
 function formatDistance(meters) { return `${(Number(meters || 0) / 1000).toFixed(1)} km`; }
 function formatDuration(seconds) { const minutes = Math.max(0, Math.round(Number(seconds || 0) / 60)); const h = Math.floor(minutes / 60); const m = minutes % 60; return h ? `${h} h ${m ? `${m} min` : ''}` : `${m} min`; }
@@ -345,7 +348,7 @@ $('#import-route').addEventListener('click', () => $('#route-file').click()); $(
 $('#export-csv').addEventListener('click', exportCsv);
 $('#navigation-provider')?.addEventListener('change', () => { updateRouteNavigation(); document.querySelectorAll('.navigation-link').forEach((link) => link.remove()); decorateNavigationLinks(); });
 $('#map-add-mode').addEventListener('click', () => { state.mapAddMode = !state.mapAddMode; $('#map-add-mode').textContent = state.mapAddMode ? 'Anulează adăugarea' : 'Adaugă de pe hartă'; $('#map-hint').textContent = state.mapAddMode ? 'Atinge punctul dorit pe hartă' : 'Atinge harta pentru o locație nouă'; message(state.mapAddMode ? 'Modul hartă este activ. Atinge punctul dorit.' : 'Adăugarea de pe hartă a fost anulată.'); });
-document.querySelectorAll('#capacity,#service-time,#max-weight,#max-volume,#vehicle-profile,#return-start,#departure-time,#traffic-level,#optimization-mode,#road-avoidance,#offline-mode').forEach((field) => field.addEventListener('change', () => { invalidateCalculation(); state.route = null; state.variantContext = null; if (state.routeLayer) { state.routeLayer.remove(); state.routeLayer = null; } if (field.id === 'offline-mode') { if (field.checked) { if (mapTiles) map.removeLayer(mapTiles); message('Mod offline Devon activ: calculul și selectarea punctelor nu folosesc API sau server.'); } else { if (mapTiles && !map.hasLayer(mapTiles)) mapTiles.addTo(map); message('Modul online a fost reactivat.'); } } save(); renderRoute(); }));
+document.querySelectorAll('#capacity,#service-time,#max-weight,#max-volume,#vehicle-profile,#return-start,#departure-time,#traffic-level,#optimization-mode,#road-avoidance,#offline-mode').forEach((field) => field.addEventListener('change', () => { invalidateCalculation(); state.route = null; state.variantContext = null; if (state.routeLayer) { state.routeLayer.remove(); state.routeLayer = null; } if (field.id === 'offline-mode') { if (field.checked) { if (mapTiles) map.removeLayer(mapTiles); showOfflineRoads(); message('Mod offline Devon activ: harta rutieră și calculul sunt locale, fără API sau server.'); } else { hideOfflineRoads(); if (mapTiles && !map.hasLayer(mapTiles)) mapTiles.addTo(map); message('Modul online a fost reactivat.'); } } save(); renderRoute(); }));
 $('#recalculate').addEventListener('click', optimize);
 $('#country').addEventListener('change', () => { state.calculationId += 1; });
 $('#stop-editor-list').addEventListener('change', (event) => { const card = event.target.closest('.stop-editor'); if (!card) return; const index = [...document.querySelectorAll('.stop-editor')].indexOf(card); if (index >= 0) rememberPoint(state.stops[index]); });
@@ -356,6 +359,6 @@ new MutationObserver(decorateAddressAlternatives).observe($('#stop-editor-list')
 new MutationObserver(decorateReorderControls).observe($('#stop-editor-list'), { childList: true });
 new MutationObserver(decorateNavigationLinks).observe($('#route-list'), { childList: true });
 new MutationObserver(decorateRouteAccess).observe($('#route-list'), { childList: true });
-load(); if ($('#offline-mode')?.checked && mapTiles) map.removeLayer(mapTiles); try { const key = 'optimizator-return-default-v1'; if (!localStorage.getItem(key)) { $('#return-start').checked = false; localStorage.setItem(key, '1'); save(); } } catch {} if (state.start?.sourceStop && !state.stops.some((stop) => stopIdentity(stop) === stopIdentity(state.start))) { state.start.startSelection = true; state.stops.unshift(state.start); } if (!validImportedPoint(state.start)) { state.start = null; $('#start-address').value = ''; } state.stops = state.stops.filter((stop) => stop.startSelection || validImportedPoint(stop)); state.blocked = state.blocked.filter(validImportedPoint); sanitizeLoadedRoute(); drawPoints(); renderStopEditor(); renderRoute();
+load(); if ($('#offline-mode')?.checked && mapTiles) { map.removeLayer(mapTiles); showOfflineRoads(); } try { const key = 'optimizator-return-default-v1'; if (!localStorage.getItem(key)) { $('#return-start').checked = false; localStorage.setItem(key, '1'); save(); } } catch {} if (state.start?.sourceStop && !state.stops.some((stop) => stopIdentity(stop) === stopIdentity(state.start))) { state.start.startSelection = true; state.stops.unshift(state.start); } if (!validImportedPoint(state.start)) { state.start = null; $('#start-address').value = ''; } state.stops = state.stops.filter((stop) => stop.startSelection || validImportedPoint(stop)); state.blocked = state.blocked.filter(validImportedPoint); sanitizeLoadedRoute(); drawPoints(); renderStopEditor(); renderRoute();
 try { const key = 'optimizator-capacity-unlimited-v1'; if (!localStorage.getItem(key)) { $('#capacity').value = '0'; localStorage.setItem(key, '1'); save(); } } catch {}
 
