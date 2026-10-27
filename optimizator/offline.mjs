@@ -1,4 +1,5 @@
 let graphPromise;
+let roadsPromise;
 
 function normalize(value) {
   return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
@@ -21,6 +22,17 @@ async function loadGraph() {
     return graph;
   });
   return graphPromise;
+}
+
+export async function loadOfflineRoads() {
+  if (roadsPromise) return roadsPromise;
+  roadsPromise = fetch('./offline-data/devon-roads-preview.json.gz').then(async (response) => {
+    if (!response.ok) throw new Error('Stratul de hartă offline Devon nu este disponibil.');
+    const stream = response.body?.pipeThrough ? response.body.pipeThrough(new DecompressionStream('gzip')) : response.body;
+    const payload = await new Response(stream).json();
+    return { type: 'FeatureCollection', features: (payload.segments || []).map((segment) => ({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: segment.map(([lat, lon]) => [lon, lat]) } })) };
+  });
+  return roadsPromise;
 }
 
 function nearestNode(graph, lat, lon) {
