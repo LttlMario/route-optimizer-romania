@@ -1,4 +1,4 @@
-const CACHE_NAME = 'optimizator-static-v92';
+const CACHE_NAME = 'optimizator-static-v93';
 const STATIC_ASSETS = [
   '/optimizator/index.html',
   '/optimizator/styles.css',
@@ -8,6 +8,7 @@ const STATIC_ASSETS = [
   '/optimizator/memory.mjs',
   '/optimizator/offline.mjs',
   '/optimizator/offline-data/devon-road-graph.json.gz',
+  '/optimizator/offline-data/devon-roads-preview.json.gz',
   '/optimizator/manifest.json',
   '/leaflet.js',
   '/leaflet.css',
