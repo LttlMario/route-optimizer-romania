@@ -78,7 +78,21 @@ export async function resolveOfflineAddress(input) {
   const exact = graph.addressesNormalized.find((address) => address.key === query) || graph.addressesNormalized.find((address) => query.includes(normalize(`${address.n} ${address.s}`)));
   if (!exact) throw new Error(`Adresa nu există în indexul offline Devon: ${input}. Alege locația direct de pe hartă sau valideaz-o online o singură dată.`);
   const [lat, lon] = graph.nodes[exact.i];
-  return { lat, lon, input, display_name: input, postcode: exact.p || '', city: exact.c || 'Devon', countryCode: 'gb', needsReview: false, offline: true };
+  const displayName = [exact.n, exact.s, exact.p, exact.c].filter(Boolean).join(', ');
+  return { lat, lon, input, display_name: displayName, postcode: exact.p || '', city: exact.c || 'Devon', countryCode: 'gb', needsReview: false, offline: true };
+}
+
+export async function searchOfflineAddresses(input, limit = 8) {
+  const graph = await loadGraph();
+  const query = normalize(input);
+  if (query.length < 3) return [];
+  const terms = query.split(' ').filter(Boolean);
+  return graph.addressesNormalized
+    .map((address) => ({ address, score: terms.every((term) => address.key.includes(term)) ? terms.length * 10 + (address.key.startsWith(query) ? 5 : 0) : 0 }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.address.key.localeCompare(b.address.key))
+    .slice(0, limit)
+    .map(({ address }) => ({ input: [address.n, address.s, address.p, address.c].filter(Boolean).join(', '), display_name: [address.n, address.s, address.p, address.c].filter(Boolean).join(', ') }));
 }
 
 export async function calculateOfflineRoute(points, returnStart = false) {
