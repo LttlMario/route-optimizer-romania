@@ -13,3 +13,5 @@ input[hidden]{display:none!important}
 
 
 .advanced-settings{margin:12px 0;border:1px solid #2c5148;border-radius:12px;padding:8px 12px;background:#0d2722}.advanced-settings>summary{cursor:pointer;color:#9cd7c7;font-weight:800;padding:4px}.advanced-settings[open]>summary{margin-bottom:12px}.advanced-settings>label,.advanced-settings>.two-col{margin-top:10px}
+
+.stop-details{margin-top:14px;border:1px solid #2c5148;border-radius:12px;padding:8px 12px;background:#0d2722}.stop-details>summary{cursor:pointer;color:#9cd7c7;font-weight:800;padding:4px}.stop-details[open]>summary{margin-bottom:12px}
