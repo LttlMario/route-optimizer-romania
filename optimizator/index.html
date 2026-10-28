@@ -33,6 +33,7 @@
             <select id="carrier"><option value="generic">Profil personal · orice firmă</option><option value="evri">Evri · preset</option><option value="yodel">Yodel · preset</option></select>
           </label>
         </div>
+        <details class="advanced-settings"><summary>Setări vehicul și rută</summary>
         <div class="two-col">
           <label>Pachete / vehicul (0 = fără limită)<input id="capacity" type="number" min="0" value="0" /></label>
           <label>Minute / oprire<input id="service-time" type="number" min="0" value="3" /></label>
@@ -44,10 +45,12 @@
         <label>Profil vehicul
           <select id="vehicle-profile"><option value="car">Autoturism</option><option value="van">Dubă</option><option value="cargo-bike">Bicicletă cargo</option></select>
         </label>
+        </details>
         <label>Plecarea / depozitul
           <div class="input-row"><input id="start-address" list="start-address-suggestions" placeholder="Adresă depozit sau punct de plecare" autocomplete="street-address" /><datalist id="start-address-suggestions"></datalist><button id="set-start" class="secondary">Adaugă</button></div>
         </label>
         <div class="button-row"><button id="use-location" class="secondary">Folosește locația mea</button><button id="recalc-location" class="secondary">Recalculează din GPS</button><button id="export-route" class="secondary">Exportă JSON</button><button id="export-csv" class="secondary">Exportă CSV</button><button id="import-route" class="secondary">Importă ruta</button><input id="route-file" type="file" accept="application/json,.json" hidden /></div>
+        <details class="advanced-settings"><summary>Opțiuni avansate</summary>
         <label class="check"><input id="return-start" type="checkbox" /> Revenire la depozit la final</label>
         <label>Ora de plecare<input id="departure-time" type="time" /></label>
         <label>Trafic estimat
@@ -74,6 +77,7 @@
         </label>
         <div class="button-row"><button id="add-blocked" class="secondary" type="button">Adaugă zonele de evitat</button></div>
         <div id="blocked-list" class="blocked-list" aria-live="polite"></div>
+        </details>
 
         <div class="section-title stops-title"><span>02</span><h2>Locații pentru rută</h2></div>
         <label>Lipește adresele, câte una pe rând
